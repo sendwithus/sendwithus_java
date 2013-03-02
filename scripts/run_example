@@ -1,0 +1,1 @@
+java -cp ".:sendwithus-0.1.jar" SendWithUsExample

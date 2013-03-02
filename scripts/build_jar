@@ -1,0 +1,8 @@
+rm sendwithus-0.1.jar
+cd src/main/java
+
+javac com/sendwithus/SendWithUs.java
+
+jar cvf sendwithus-0.1.jar ./
+cd ../../../
+mv src/main/java/sendwithus-0.1.jar ./
