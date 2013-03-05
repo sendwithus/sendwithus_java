@@ -1,1 +1,1 @@
-javac -classpath sendwithus-0.1.jar SendWithUsExample.java
+javac -classpath sendwithus-0.2.jar SendWithUsExample.java

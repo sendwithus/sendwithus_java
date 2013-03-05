@@ -23,12 +23,12 @@ public class SendWithUs
         this.apiKey = apiKey;
     }
 
-    public void send(String emailName, String emailTo, Map<String, Object> emailData) 
+    public void send(String emailID, String emailTo, Map<String, Object> emailData) 
             throws SendWithUsException
     {
 
         Map<String, Object> sendParams = new HashMap<String, Object>();
-        sendParams.put("email_name", emailName);
+        sendParams.put("email_id", emailID);
         sendParams.put("email_to", emailTo);
         sendParams.put("email_data", emailData);
 
