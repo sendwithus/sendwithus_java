@@ -1,8 +1,12 @@
-rm sendwithus-0.2.jar
+rm build/*
+
 cd src/main/java
 
-javac com/sendwithus/SendWithUs.java
+javac -cp ".:../../../lib/gson-2.2.2.jar" com/sendwithus/model/Email.java
+javac -cp ".:../../../lib/gson-2.2.2.jar" com/sendwithus/model/SendReceipt.java
+javac -cp ".:../../../lib/gson-2.2.2.jar" com/sendwithus/SendWithUs.java
 
-jar cvf sendwithus-0.2.jar ./
+jar cvf sendwithus-0.0.3.jar ./
 cd ../../../
-mv src/main/java/sendwithus-0.2.jar ./
+
+mv src/main/java/sendwithus-0.0.3.jar ./build

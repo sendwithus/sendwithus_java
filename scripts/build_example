@@ -1,1 +1,1 @@
-javac -classpath sendwithus-0.2.jar SendWithUsExample.java
+javac -cp ".:lib/gson-2.2.2.jar:build/sendwithus-0.0.3.jar" SendWithUsExample.java

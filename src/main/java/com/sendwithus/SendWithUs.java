@@ -1,13 +1,19 @@
 package com.sendwithus;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+
+import com.google.gson.Gson;
 
 import com.sendwithus.exception.SendWithUsException;
+import com.sendwithus.model.Email;
+import com.sendwithus.model.SendReceipt;
 
 
 public class SendWithUs
@@ -19,25 +25,13 @@ public class SendWithUs
 
     private String apiKey;
 
-    public SendWithUs(String apiKey) {
+    public SendWithUs(String apiKey) 
+    {
         this.apiKey = apiKey;
     }
 
-    public void send(String emailID, String emailTo, Map<String, Object> emailData) 
-            throws SendWithUsException
+    private static String getURLEndpoint(String resourceName) 
     {
-
-        Map<String, Object> sendParams = new HashMap<String, Object>();
-        sendParams.put("email_id", emailID);
-        sendParams.put("email_to", emailTo);
-        sendParams.put("email_data", emailData);
-
-        String url = getURLEndpoint("send");
-
-        makeURLRequest(url, this.apiKey, sendParams);
-    }
-
-    private static String getURLEndpoint(String resourceName) {
         return String.format("%s://%s:%s/api/v%s/%s", 
             SendWithUs.API_PROTO, SendWithUs.API_HOST, 
             SendWithUs.API_PORT, SendWithUs.API_VERSION, 
@@ -45,7 +39,7 @@ public class SendWithUs
     }
 
     private static javax.net.ssl.HttpsURLConnection createConnection(
-            String url, String apiKey, Map<String, Object> params) 
+            String url, String apiKey, String method, Map<String, Object> params) 
             throws IOException
     {
         
@@ -59,25 +53,30 @@ public class SendWithUs
         for (Map.Entry<String, String> header : getHeaders(apiKey).entrySet()) {
             connection.setRequestProperty(header.getKey(), header.getValue());
         }
-        connection.setRequestMethod("POST");
-        connection.setDoOutput(true);
 
-        String jsonParams = jsonifyParams(params);
-        
-        OutputStream output = null;
-        try {
-            output = connection.getOutputStream();
-            output.write(jsonParams.getBytes("UTF-8"));
-        } finally {
-            if (output != null) {
-                output.close();
+        connection.setRequestMethod(method);
+
+        if (method == "POST") {
+            connection.setDoOutput(true); // Note: this implicitly sets method to POST
+
+            String jsonParams = jsonifyParams(params);
+            
+            OutputStream output = null;
+            try {
+                output = connection.getOutputStream();
+                output.write(jsonParams.getBytes("UTF-8"));
+            } finally {
+                if (output != null) {
+                    output.close();
+                }
             }
         }
 
         return connection;
     }
 
-    private static Map<String, String> getHeaders(String apiKey) {
+    private static Map<String, String> getHeaders(String apiKey) 
+    {
         Map<String, String> headers = new HashMap<String, String>();
         
         headers.put("Accept", "text/plain");
@@ -87,7 +86,12 @@ public class SendWithUs
         return headers;
     }
 
-    private static String jsonifyParams(Map<?, ?> params) {
+    private static String jsonifyParams(Map<?, ?> params) 
+    {
+        if (params == null) {
+            return "{}";
+        }
+
         StringBuffer jsonStringBuffer = new StringBuffer();
 
         jsonStringBuffer.append("{");
@@ -108,13 +112,27 @@ public class SendWithUs
         return jsonStringBuffer.toString();
     }
 
-    private static void makeURLRequest(
-            String url, String apiKey, Map<String, Object> params)
+    private static String getResponseBody(javax.net.ssl.HttpsURLConnection connection) 
+            throws IOException
+    {
+
+        InputStream responseStream = connection.getInputStream();
+        
+        String responseBody = new Scanner(responseStream, "UTF-8")
+            .useDelimiter("\\A")
+            .next();
+        responseStream.close();
+
+        return responseBody;
+    }
+
+    private static String makeURLRequest(
+            String url, String apiKey, String method, Map<String, Object> params)
             throws SendWithUsException
     {
         javax.net.ssl.HttpsURLConnection connection = null;
         try {
-            connection = createConnection(url, apiKey, params);
+            connection = createConnection(url, apiKey, method, params);
         } catch (IOException e) {
             throw new SendWithUsException("Connection error");
         }
@@ -130,11 +148,50 @@ public class SendWithUs
                 case 404:
                     throw new SendWithUsException("Resource not found");
                 default:
-                    throw new SendWithUsException("Unknown error, contact api@sendwithus.com");
+                    throw new SendWithUsException(String.format(
+                        "Unknown error %d, contact api@sendwithus.com", 
+                        responseCode));
                 }
             }
         } catch (IOException e) {
             throw new SendWithUsException("Caught IOException");
         }
+
+        String response = "";
+        try {
+            response = getResponseBody(connection);
+        } catch (IOException e) {
+            throw new SendWithUsException("Caught IOException in response");
+        }
+
+        return response;
     }
+
+    public Email[] emails()
+        throws SendWithUsException
+    {
+        String url = getURLEndpoint("emails");
+
+        String response = makeURLRequest(url, this.apiKey, "GET", null);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, Email[].class);
+    }
+
+    public SendReceipt send(String emailID, String emailTo, Map<String, Object> emailData) 
+            throws SendWithUsException
+    {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("email_id", emailID);
+        sendParams.put("email_to", emailTo);
+        sendParams.put("email_data", emailData);
+
+        String url = getURLEndpoint("send");
+
+        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, SendReceipt.class);
+    }
+
 }
