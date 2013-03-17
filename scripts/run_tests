@@ -1,1 +1,5 @@
-java -cp ".:lib/gson-2.2.2.jar:lib/junit-4.10.jar:build/sendwithus-1.0.0.jar:src/test/java/com/sendwithus" org.junit.runner.JUnitCore [SendWithUsTest]
+cd src/test/java
+
+java -cp ".:../../../lib/gson-2.2.2.jar:../../../lib/junit-4.10.jar:../../../build/sendwithus-1.0.0.jar" org.junit.runner.JUnitCore com.sendwithus.SendWithUsTest
+
+cd ../../../

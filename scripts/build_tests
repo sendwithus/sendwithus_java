@@ -1,1 +1,5 @@
-javac -cp ".:lib/gson-2.2.2.jar:lib/junit-4.10.jar:build/sendwithus-1.0.0.jar" src/test/java/com/sendwithus/SendWithUsTest.java
+cd src/test/java
+
+javac -cp ".:../../../lib/gson-2.2.2.jar:../../../lib/junit-4.10.jar:../../../build/sendwithus-1.0.0.jar" com/sendwithus/SendWithUsTest.java
+
+cd ../../../
