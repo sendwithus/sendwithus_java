@@ -21,7 +21,7 @@ public class SendWithUs
     public static final String API_PROTO = "https";
     public static final String API_HOST = "beta.sendwithus.com";
     public static final String API_PORT = "443";
-    public static final String API_VERSION = "0";
+    public static final String API_VERSION = "1_0";
 
     private String apiKey;
 
@@ -178,12 +178,23 @@ public class SendWithUs
         return gson.fromJson(response, Email[].class);
     }
 
-    public SendReceipt send(String emailID, String emailTo, Map<String, Object> emailData) 
+    public SendReceipt send(String emailID, Map<String, Object> recipient, Map<String, Object> emailData) 
+            throws SendWithUsException
+    {
+        return this.send(emailID, recipient, null, emailData);
+    }
+
+    public SendReceipt send(String emailID, Map<String, Object> recipient, Map<String, Object> sender, Map<String, Object> emailData) 
             throws SendWithUsException
     {
         Map<String, Object> sendParams = new HashMap<String, Object>();
         sendParams.put("email_id", emailID);
-        sendParams.put("email_to", emailTo);
+        sendParams.put("recipient", recipient);
+        // sender is optional
+        if (sender != null)
+        {
+            sendParams.put("sender", sender);
+        }
         sendParams.put("email_data", emailData);
 
         String url = getURLEndpoint("send");
