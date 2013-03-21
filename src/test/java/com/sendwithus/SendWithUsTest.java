@@ -24,7 +24,7 @@ import com.sendwithus.model.SendReceipt;
 public class SendWithUsTest {
 
     public static final String SENDWITHUS_API_KEY = "THIS_IS_A_TEST_API_KEY";
-    public static final String EMAIL_ID_WELCOME_EMAIL = "test_fixture_1";
+    public static final String EMAIL_ID = "test_fixture_1";
 
     static SendWithUs sendwithusAPI;
    
@@ -69,7 +69,7 @@ public class SendWithUsTest {
     public void testSimpleSend() throws SendWithUsException {
         
         SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID_WELCOME_EMAIL, 
+            EMAIL_ID, 
             defaultRecipientParams,
             defaultDataParams
         );
@@ -84,7 +84,7 @@ public class SendWithUsTest {
     public void testSendWithSender() throws SendWithUsException {
          
         SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID_WELCOME_EMAIL, 
+            EMAIL_ID, 
             defaultRecipientParams,
             defaultSenderParams,
             defaultDataParams
@@ -100,7 +100,7 @@ public class SendWithUsTest {
     public void testSendIncomplete() throws SendWithUsException {
     
         SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID_WELCOME_EMAIL, 
+            EMAIL_ID, 
             invalidRecipientParams,
             defaultDataParams
         );
@@ -116,7 +116,7 @@ public class SendWithUsTest {
         SendWithUs invalidAPI = new SendWithUs("INVALID_KEY");
         
         SendReceipt sendReceipt = invalidAPI.send(
-            EMAIL_ID_WELCOME_EMAIL, 
+            EMAIL_ID, 
             defaultRecipientParams,
             defaultDataParams
         );
