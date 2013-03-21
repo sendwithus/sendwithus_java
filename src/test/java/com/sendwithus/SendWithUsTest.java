@@ -23,8 +23,8 @@ import com.sendwithus.model.SendReceipt;
 @RunWith(JUnit4.class)
 public class SendWithUsTest {
 
-    public static final String SENDWITHUS_API_KEY = "API-KEY-HERE";
-    public static final String EMAIL_ID_WELCOME_EMAIL = "EMAIL-ID-HERE";
+    public static final String SENDWITHUS_API_KEY = "THIS_IS_A_TEST_API_KEY";
+    public static final String EMAIL_ID_WELCOME_EMAIL = "test_fixture_1";
 
     static SendWithUs sendwithusAPI;
    
