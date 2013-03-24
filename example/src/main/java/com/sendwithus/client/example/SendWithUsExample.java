@@ -1,4 +1,5 @@
-import java.io.IOException;
+package com.sendwithus.client.example;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public class SendWithUsExample {
 
     public static final String SENDWITHUS_API_KEY = "API-KEY-HERE";
     public static final String EMAIL_ID_WELCOME_EMAIL = "EMAIL-ID-HERE";
-    
+
     public static void main(String[] args) {
 
         SendWithUs sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
