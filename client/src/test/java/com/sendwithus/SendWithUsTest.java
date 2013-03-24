@@ -15,7 +15,6 @@ import org.junit.runners.JUnit4;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sendwithus.SendWithUs;
 import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.SendReceipt;
