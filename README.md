@@ -1,22 +1,41 @@
 # sendwithus_java
 
-Java class for sending email via the sendwithus API.
+This repository contains the source code for the  Java library for sending email via the [sendwithus](http://sendwithus.com) API.
 
-[sendwithus.com](http://sendwithus.com)
+To use the library in your own project, please follow the installation and usage instructions below - you do not need to build the library yourself.
 
 ## Installation
 
-    $ wget https://github.com/sendwithus/sendwithus_java/raw/master/build/sendwithus-1.0.0.jar
+### via maven (preferred)
 
-### Dependencies
- - [junit-4.10](https://github.com/sendwithus/sendwithus_java/raw/master/lib/junit-4.10.jar)
- - [gson-2.2.2](https://github.com/sendwithus/sendwithus_java/raw/master/lib/gson-2.2.2.jar)
+Add the following to your pom.xml:
+
+        
+    <!-- in the repositories section -->
+    <repository>
+        <id>repo</id>
+        <url>https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases</url>
+    </repository>        
+
+    <!-- in the dependencies section -->
+    <dependency>
+        <groupId>com.sendwithus</groupId>
+        <artifactId>java-client</artifactId>
+        <version>1.0.1</version>
+    </dependency>
+    
+### via wget:
+
+    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.0.1/java-client-1.0.1.jar
+
+### External Dependencies (if not using maven)
+ - [gson-2.2.2](http://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
 
 ## Usage
 
 ### General
 
-See [SendWithUsExample.java](https://github.com/sendwithus/sendwithus_java/blob/master/SendWithUsExample.java) for full usage.
+See [SendWithUsExample.java](https://github.com/sendwithus/sendwithus_java/blob/master/example/src/main/java/com/sendwithus/client/example/SendWithUsExample.java) for full usage.
 
     import java.util.HashMap;
     import java.util.Map;
