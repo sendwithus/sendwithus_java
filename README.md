@@ -21,7 +21,7 @@ Add the following to your pom.xml:
     <dependency>
         <groupId>com.sendwithus</groupId>
         <artifactId>java-client</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </dependency>
     
 ### via wget:
