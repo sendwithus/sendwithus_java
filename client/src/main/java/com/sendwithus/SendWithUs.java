@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.Email;
@@ -19,7 +20,7 @@ public class SendWithUs
 {
     public static final String API_PROTO = "https";
     public static final String API_HOST = "beta.sendwithus.com";
-    public static final String API_PORT = "443";
+    public static final String API_PORT = "443";    
     public static final String API_VERSION = "1_0";
 
     private String apiKey;
@@ -57,9 +58,10 @@ public class SendWithUs
 
         if (method == "POST") {
             connection.setDoOutput(true); // Note: this implicitly sets method to POST
-
-            String jsonParams = jsonifyParams(params);
             
+            Gson gson = new GsonBuilder().create();
+            String jsonParams = gson.toJson(params);
+
             OutputStream output = null;
             try {
                 output = connection.getOutputStream();
@@ -83,32 +85,6 @@ public class SendWithUs
         headers.put("X-SWU-API-KEY", apiKey);
 
         return headers;
-    }
-
-    private static String jsonifyParams(Map<?, ?> params) 
-    {
-        if (params == null) {
-            return "{}";
-        }
-
-        StringBuffer jsonStringBuffer = new StringBuffer();
-
-        jsonStringBuffer.append("{");
-        for (Map.Entry<?, ?> entry : params.entrySet()) {
-            jsonStringBuffer.append(",\"");
-            jsonStringBuffer.append(entry.getKey().toString());
-            jsonStringBuffer.append("\":");
-
-            if (entry.getValue() instanceof Map<?, ?>) {
-                jsonStringBuffer.append(jsonifyParams((Map<?, ?>) entry.getValue()));
-            } else {
-                jsonStringBuffer.append(String.format("\"%s\"", entry.getValue().toString()));
-            }
-        }
-        jsonStringBuffer.append("}");
-        jsonStringBuffer.deleteCharAt(1);
-
-        return jsonStringBuffer.toString();
     }
 
     private static String getResponseBody(javax.net.ssl.HttpsURLConnection connection) 

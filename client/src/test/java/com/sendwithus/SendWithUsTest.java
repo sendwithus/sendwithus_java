@@ -14,6 +14,7 @@ import org.junit.runners.JUnit4;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 
 import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.Email;
@@ -132,6 +133,45 @@ public class SendWithUsTest {
             defaultRecipientParams,
             defaultDataParams
         );
+    }
+
+    /**
+    *   Test send Array in data params
+    */
+    @Test
+    public void testSendArrayInData() throws SendWithUsException {
+
+        defaultDataParams.put("array", new String[]{"send", "with", "us"});
+
+        SendReceipt sendReceipt = sendwithusAPI.send(
+            EMAIL_ID, 
+            defaultRecipientParams,
+            defaultDataParams
+        );
+        
+        assertNotNull(sendReceipt);
+    }
+
+    /**
+    *   Test send ArrayList in data params
+    */
+    @Test
+    public void testSendArrayListInData() throws SendWithUsException {
+
+        ArrayList<String> arrayList = new ArrayList<String>();
+        arrayList.add("send");
+        arrayList.add("with");
+        arrayList.add("us");
+
+        defaultDataParams.put("arrayList", arrayList);
+
+        SendReceipt sendReceipt = sendwithusAPI.send(
+            EMAIL_ID, 
+            defaultRecipientParams,
+            defaultDataParams
+        );
+        
+        assertNotNull(sendReceipt);
     }
 
 }
