@@ -22,6 +22,10 @@ public class SendWithUs
     public static final String API_HOST = "beta.sendwithus.com";
     public static final String API_PORT = "443";    
     public static final String API_VERSION = "1_0";
+    public static final String CLIENT_VERSION = "1.0.4";
+    public static final String CLIENT_LANG = "java";
+    public static final String SWU_API_HEADER = "X-SWU-API-KEY";
+    public static final String SWU_CLIENT_HEADER = "X-SWU-API-CLIENT";
 
     private String apiKey;
 
@@ -79,10 +83,12 @@ public class SendWithUs
     private static Map<String, String> getHeaders(String apiKey) 
     {
         Map<String, String> headers = new HashMap<String, String>();
+        String clientStub = String.format("%s-%s", SendWithUs.CLIENT_LANG, SendWithUs.CLIENT_VERSION);
         
         headers.put("Accept", "text/plain");
         headers.put("Content-Type", "application/json;charset=UTF-8");
-        headers.put("X-SWU-API-KEY", apiKey);
+        headers.put(SendWithUs.SWU_API_HEADER, apiKey);
+        headers.put(SendWithUs.SWU_CLIENT_HEADER, clientStub);
 
         return headers;
     }
