@@ -32,11 +32,23 @@ public class SendWithUsTest {
     static Map<String, Object> invalidRecipientParams = new HashMap<String, Object>();
     static Map<String, Object> defaultSenderParams = new HashMap<String, Object>();
     static Map<String, Object> defaultDataParams = new HashMap<String, Object>();
+    static List<Map<String, Object>> defaultCC = new ArrayList<HashMap<String, Object>>();
+    static List<Map<String, Object>> defaultBCC = new ArrayList<HashMap<String, Object>>();
     
     @BeforeClass
     public static void setUp() {
         
         sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
+
+        HashMap<String, Object> cc = new HashMap<String, Object>();
+        cc.put("name", "Test CC");
+        cc.put("address", "test+cc@company.com");
+
+        HashMap<String, Object> bcc = new HashMap<String, Object>();
+        bcc.put("name", "Test BCC");
+        bcc.put("address", "test+bcc@company.com");
+        defaultBCC.add(bcc);
+        defaultBCC.add(bcc);
 
         defaultRecipientParams.put("name", "Matt");
         defaultRecipientParams.put("address", "us@sendwithus.com");
@@ -88,6 +100,41 @@ public class SendWithUsTest {
             defaultRecipientParams,
             defaultSenderParams,
             defaultDataParams
+        );
+        
+        assertNotNull(sendReceipt);
+    }
+
+    /**
+     *   Test send with cc info
+     */
+    @Test
+    public void testSendWithCC() throws SendWithUsException {
+         
+        SendReceipt sendReceipt = sendwithusAPI.send(
+            EMAIL_ID, 
+            defaultRecipientParams,
+            null,
+            defaultDataParams,
+            defaultCC
+        );
+        
+        assertNotNull(sendReceipt);
+    }
+
+    /**
+     *   Test send with cc info
+     */
+    @Test
+    public void testSendWithBCC() throws SendWithUsException {
+         
+        SendReceipt sendReceipt = sendwithusAPI.send(
+            EMAIL_ID, 
+            defaultRecipientParams,
+            null,
+            defaultDataParams,
+            null,
+            defaultBCC
         );
         
         assertNotNull(sendReceipt);
