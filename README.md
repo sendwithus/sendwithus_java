@@ -4,29 +4,34 @@ This repository contains the source code for the  Java library for sending email
 
 To use the library in your own project, please follow the installation and usage instructions below - you do not need to build the library yourself.
 
+**Warning**
+
+This client is a working development repository, please use the `1.0.2` jar or maven repository. _Do not_ build 
+the client yourself.
+
 ## Installation
 
 ### via maven (preferred)
 
 Add the following to your pom.xml:
 
-        
-    <!-- in the repositories section -->
-    <repository>
+```xml
+<!-- in the repositories section -->
+<repository>
         <id>repo</id>
         <url>https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases</url>
-    </repository>        
+</repository>        
 
-    <!-- in the dependencies section -->
-    <dependency>
+<!-- in the dependencies section -->
+<dependency>
         <groupId>com.sendwithus</groupId>
         <artifactId>java-client</artifactId>
         <version>1.0.2</version>
-    </dependency>
-    
+</dependency>
+```
 ### via wget:
 
-    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.0.1/java-client-1.0.1.jar
+    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.0.2/java-client-1.0.1.jar
 
 ### External Dependencies (if not using maven)
  - [gson-2.2.2](http://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
