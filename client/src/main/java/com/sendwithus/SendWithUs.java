@@ -19,7 +19,7 @@ import com.sendwithus.model.SendReceipt;
 public class SendWithUs
 {
     public static final String API_PROTO = "https";
-    public static final String API_HOST = "beta.sendwithus.com";
+    public static final String API_HOST = "api.sendwithus.com";
     public static final String API_PORT = "443";    
     public static final String API_VERSION = "1_0";
     public static final String CLIENT_VERSION = "1.0.4";
