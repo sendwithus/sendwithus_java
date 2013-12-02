@@ -19,7 +19,7 @@ import com.sendwithus.model.SendReceipt;
 public class SendWithUs
 {
     public static final String API_PROTO = "https";
-    public static final String API_HOST = "beta.sendwithus.com";
+    public static final String API_HOST = "api.sendwithus.com";
     public static final String API_PORT = "443";    
     public static final String API_VERSION = "1_0";
     public static final String CLIENT_VERSION = "1.0.4";
@@ -165,60 +165,42 @@ public class SendWithUs
 
     /**
      * send
-     * String emailID
+     * String emailId
      * Map<String, Object> recipient
      * Map<String, Object> emailData
      */
-    public SendReceipt send(String emailID, Map<String, Object> recipient, 
+    public SendReceipt send(String emailId, Map<String, Object> recipient, 
             Map<String, Object> emailData) 
             throws SendWithUsException
     {
-        return this.send(emailID, recipient, null, emailData);
+        return this.send(emailId, recipient, null, emailData);
     }
 
     /**
      * send
-     * String emailID
+     * String emailId
      * Map<String, Object> recipient
      * Map<String, Object> sender
      * Map<String, Object> emailData
      */
-    public SendReceipt send(String emailID, Map<String, Object> recipient, 
+    public SendReceipt send(String emailId, Map<String, Object> recipient, 
             Map<String, Object> sender, Map<String, Object> emailData) 
             throws SendWithUsException
     {
-
         return this.send(emailId, recipient, sender, emailData, null, null);
-
-        Map<String, Object> sendParams = new HashMap<String, Object>();
-        sendParams.put("email_id", emailID);
-        sendParams.put("recipient", recipient);
-        // sender is optional
-        if (sender != null)
-        {
-            sendParams.put("sender", sender);
-        }
-        sendParams.put("email_data", emailData);
-
-        String url = getURLEndpoint("send");
-
-        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
-
-        Gson gson = new Gson();
-        return gson.fromJson(response, SendReceipt.class);
     }
 
     /**
      * send
-     * String emailID
+     * String emailId
      * Map<String, Object> recipient
      * Map<String, Object> sender
      * Map<String, Object> emailData
      * Array(Map<String, Object>) cc
      */
-    public SendReceipt send(String emailID, Map<String, Object> recipient, 
+    public SendReceipt send(String emailId, Map<String, Object> recipient, 
             Map<String, Object> sender, Map<String, Object> emailData,
-            Map<String, Object>[] cc, Map<String, Object>[] bcc) 
+            Map<String, Object>[] cc) 
             throws SendWithUsException
     {
         return this.send(emailId, recipient, sender, emailData, cc, null);
@@ -226,20 +208,20 @@ public class SendWithUs
 
     /**
      * send
-     * String emailID
+     * String emailId
      * Map<String, Object> recipient
      * Map<String, Object> sender
      * Map<String, Object> emailData
      * Array(Map<String, Object>) cc
      * Array(Map<String, Object>) bcc
      */
-    public SendReceipt send(String emailID, Map<String, Object> recipient, 
+    public SendReceipt send(String emailId, Map<String, Object> recipient, 
             Map<String, Object> sender, Map<String, Object> emailData,
             Map<String, Object>[] cc, Map<String, Object>[] bcc) 
             throws SendWithUsException
     {
         Map<String, Object> sendParams = new HashMap<String, Object>();
-        sendParams.put("email_id", emailID);
+        sendParams.put("email_id", emailId);
         sendParams.put("recipient", recipient);
         sendParams.put("email_data", emailData);
 
