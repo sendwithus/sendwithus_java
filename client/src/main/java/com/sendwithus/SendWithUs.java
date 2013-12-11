@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.SendReceipt;
+import com.sendwithus.model.RenderedTemplate;
 
 
 public class SendWithUs
@@ -249,6 +250,26 @@ public class SendWithUs
 
         Gson gson = new Gson();
         return gson.fromJson(response, SendReceipt.class);
+    }
+
+    /**
+     * render
+     * String emailId
+     * Map<String, Object> emailData
+     */
+    public RenderedTemplate render(String templateId, Map<String, Object> templateData)
+            throws SendWithUsException
+    {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("template_id", templateId);
+        sendParams.put("template_data", templateData);
+
+        String url = getURLEndpoint("render");
+
+        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, RenderedTemplate.class);
     }
 
 }
