@@ -5,7 +5,7 @@ javac -cp ".:../../../../lib/gson-2.2.2.jar" com/sendwithus/model/SendReceipt.ja
 javac -cp ".:../../../../lib/gson-2.2.2.jar" com/sendwithus/model/Email.java
 javac -cp ".:../../../../lib/gson-2.2.2.jar" com/sendwithus/SendWithUs.java
 
-jar cvf sendwithus-1.0.5.jar ./
+jar cvf sendwithus-dev.jar ./
 cd ../../../../
 
-mv client/src/main/java/sendwithus-1.0.5.jar ./
+mv client/src/main/java/sendwithus-dev.jar ./

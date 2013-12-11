@@ -1,1 +1,1 @@
-java -cp ".:lib/gson-2.2.2.jar:sendwithus-1.0.5.jar" SendWithUsExample
+java -cp ".:lib/gson-2.2.2.jar:sendwithus-dev.jar" SendWithUsExample

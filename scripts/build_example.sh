@@ -1,2 +1,2 @@
-javac -cp ".:lib/gson-2.2.2.jar:sendwithus-1.0.5.jar" example/src/main/java/com/sendwithus/client/example/SendWithUsExample.java
+javac -cp ".:lib/gson-2.2.2.jar:sendwithus-dev.jar" example/src/main/java/com/sendwithus/client/example/SendWithUsExample.java
 mv example/src/main/java/com/sendwithus/client/example/SendWithUsExample.class ./
