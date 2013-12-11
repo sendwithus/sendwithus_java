@@ -174,4 +174,30 @@ public class SendWithUsTest {
         assertNotNull(sendReceipt);
     }
 
+    /**
+     *   Test render
+     */
+    @Test
+    public void testRender() throws SendWithUsException {
+        
+        RenderedTemplate renderedTemplate = sendwithusAPI.render(
+            EMAIL_ID, 
+            defaultDataParams
+        );
+        
+        assertNotNull(renderedTemplate);
+    }
+
+    /**
+     *   Test invalid email_id
+     */
+    @Test(expected=SendWithUsException.class)
+    public void testRenderInvalidEmailId() throws SendWithUsException {
+
+        RenderedTemplate renderedTemplate = sendwithusAPI.render(
+            "INVALID_EMAIL_ID", 
+            defaultDataParams
+        );
+    }
+
 }
