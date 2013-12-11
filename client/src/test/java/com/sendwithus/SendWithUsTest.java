@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.Email;
+import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
 
 @RunWith(JUnit4.class)
