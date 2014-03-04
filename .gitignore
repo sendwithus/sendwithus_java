@@ -1,2 +1,4 @@
 *.class
 /client/target
+
+.FS_Store
