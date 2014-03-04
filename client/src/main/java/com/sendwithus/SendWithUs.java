@@ -1,12 +1,18 @@
 package com.sendwithus;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,7 +53,7 @@ public class SendWithUs
             String url, String apiKey, String method, Map<String, Object> params) 
             throws IOException
     {
-        
+
         URL connectionURL = new URL(url);
         javax.net.ssl.HttpsURLConnection connection = 
             (javax.net.ssl.HttpsURLConnection) connectionURL.openConnection();
@@ -66,6 +72,8 @@ public class SendWithUs
             
             Gson gson = new GsonBuilder().create();
             String jsonParams = gson.toJson(params);
+
+            System.out.println(jsonParams);
 
             OutputStream output = null;
             try {
@@ -242,6 +250,76 @@ public class SendWithUs
         if (bcc != null)
         {
             sendParams.put("bcc", bcc);
+        }
+
+        String url = getURLEndpoint("send");
+
+        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, SendReceipt.class);
+    }
+
+    /**
+     * send
+     * String emailId
+     * Map<String, Object> recipient
+     * Map<String, Object> sender
+     * Map<String, Object> emailData
+     * Array(Map<String, Object>) cc
+     * Array(Map<String, Object>) bcc
+     * String attachment
+     */
+    public SendReceipt send(String emailId, Map<String, Object> recipient,
+            Map<String, Object> sender, Map<String, Object> emailData,
+            Map<String, Object>[] cc, Map<String, Object>[] bcc, String[] file_paths)
+            throws SendWithUsException
+    {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("email_id", emailId);
+        sendParams.put("recipient", recipient);
+        sendParams.put("email_data", emailData);
+
+        // sender is optional
+        if (sender != null)
+        {
+            sendParams.put("sender", sender);
+        }
+
+        // cc is optional
+        if (cc != null)
+        {
+            sendParams.put("cc", cc);
+        }
+
+        // bcc is optional
+        if (bcc != null)
+        {
+            sendParams.put("bcc", bcc);
+        }
+
+        if (file_paths != null)
+        {
+            ArrayList<HashMap> files = new ArrayList<HashMap>();
+
+            for (int i = 0; i < file_paths.length; i++) {
+                try {
+                    File file = new File(file_paths[i]);
+                    byte[] byteArray = FileUtils.readFileToByteArray(file);
+                    byte[] encodedBytes = Base64.encodeBase64(byteArray);
+
+                    HashMap<String, String> file_map = new HashMap<String, String>();
+
+                    file_map.put("id", FilenameUtils.getName(file_paths[i]));
+                    file_map.put("data", new String(encodedBytes));
+
+                    files.add(file_map);
+
+                } catch (IOException e) {
+                    throw new SendWithUsException("Caught IOException");
+                }
+            }
+            sendParams.put("files", files);
         }
 
         String url = getURLEndpoint("send");
