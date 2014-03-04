@@ -1,4 +1,4 @@
 *.class
 /client/target
 
-.FS_Store
+.DS_Store
