@@ -73,8 +73,6 @@ public class SendWithUs
             Gson gson = new GsonBuilder().create();
             String jsonParams = gson.toJson(params);
 
-            System.out.println(jsonParams);
-
             OutputStream output = null;
             try {
                 output = connection.getOutputStream();
