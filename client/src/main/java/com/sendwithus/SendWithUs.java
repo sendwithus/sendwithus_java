@@ -104,7 +104,14 @@ public class SendWithUs
             throws IOException
     {
 
-        InputStream responseStream = connection.getInputStream();
+        int responseCode = connection.getResponseCode();
+        InputStream responseStream = null;
+
+        if (responseCode == 200) {
+            responseStream = connection.getInputStream();
+        } else {
+            responseStream = connection.getErrorStream();
+        }
         
         String responseBody = new Scanner(responseStream, "UTF-8")
             .useDelimiter("\\A")
@@ -127,10 +134,11 @@ public class SendWithUs
 
         try {
             int responseCode = connection.getResponseCode();
+
             if (responseCode < 200 || responseCode >= 300) {
                 switch (responseCode) {
                 case 400:
-                    throw new SendWithUsException("Bad request");
+                    throw new SendWithUsException("Bad request: " + getResponseBody(connection));
                 case 403:
                     throw new SendWithUsException("Authentication error");
                 case 404:
@@ -270,7 +278,7 @@ public class SendWithUs
      */
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> sender, Map<String, Object> emailData,
-            Map<String, Object>[] cc, Map<String, Object>[] bcc, String[] file_paths)
+            Map<String, Object>[] cc, Map<String, Object>[] bcc, String[] attachment_paths)
             throws SendWithUsException
     {
         Map<String, Object> sendParams = new HashMap<String, Object>();
@@ -296,19 +304,19 @@ public class SendWithUs
             sendParams.put("bcc", bcc);
         }
 
-        if (file_paths != null)
+        if (attachment_paths != null)
         {
             ArrayList<HashMap> files = new ArrayList<HashMap>();
 
-            for (int i = 0; i < file_paths.length; i++) {
+            for (int i = 0; i < attachment_paths.length; i++) {
                 try {
-                    File file = new File(file_paths[i]);
+                    File file = new File(attachment_paths[i]);
                     byte[] byteArray = FileUtils.readFileToByteArray(file);
                     byte[] encodedBytes = Base64.encodeBase64(byteArray);
 
                     HashMap<String, String> file_map = new HashMap<String, String>();
 
-                    file_map.put("id", FilenameUtils.getName(file_paths[i]));
+                    file_map.put("id", FilenameUtils.getName(attachment_paths[i]));
                     file_map.put("data", new String(encodedBytes));
 
                     files.add(file_map);

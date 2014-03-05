@@ -40,7 +40,7 @@ public class SendWithUsTest {
         sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
 
         defaultRecipientParams.put("name", "Matt");
-        defaultRecipientParams.put("address", "team@sendwithus.com");
+        defaultRecipientParams.put("address", "test@sendwithus.com");
 
         invalidRecipientParams.put("name", "Matt");
         
@@ -101,6 +101,28 @@ public class SendWithUsTest {
     public void testSendWithAttachment() throws SendWithUsException {
 
         String[] str = {"test.png", "test.png"};
+
+        SendReceipt sendReceipt = sendwithusAPI.send(
+            EMAIL_ID,
+            defaultRecipientParams,
+            defaultSenderParams,
+            defaultDataParams,
+            null,
+            null,
+            str
+        );
+
+        assertNotNull(sendReceipt);
+    }
+
+
+    /**
+     *   Test send with empty attachment list
+     */
+    @Test
+    public void testSendWithEmptyAttachment() throws SendWithUsException {
+
+        String[] str = {};
 
         SendReceipt sendReceipt = sendwithusAPI.send(
             EMAIL_ID,
