@@ -70,11 +70,16 @@ Map<String, Object> emailDataMap = new HashMap<String, Object>();
 emailDataMap.put("first_name", "Brad");
 emailDataMap.put("link", "http://sendwithus.com/some_link");
 
+String[] attachments = {"test.png"}
+
 SendReceipt sendReceipt = sendwithusAPI.send(
     EMAIL_ID_WELCOME_EMAIL,
     recipientMap,
     senderMap,
-    emailDataMap
+    emailDataMap,
+    null,
+    null,
+    attachments
 );
 ```
 
