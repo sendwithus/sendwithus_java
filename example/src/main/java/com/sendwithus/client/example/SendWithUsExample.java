@@ -43,12 +43,17 @@ public class SendWithUsExample {
         emailDataMap.put("first_name", "Brad");
         emailDataMap.put("link", "http://sendwithus.com/some_link");
 
+        String[] attachments = {"test.png", "test.png"};
+
         try {
             SendReceipt sendReceipt = sendwithusAPI.send(
                 EMAIL_ID_WELCOME_EMAIL, 
                 recipientMap,
                 senderMap,
-                emailDataMap
+                emailDataMap,
+                null,
+                null,
+                attachments
             );
             System.out.println(sendReceipt);
         } catch (SendWithUsException e) {
