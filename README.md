@@ -35,6 +35,8 @@ Add the following to your pom.xml:
 
 ### External Dependencies (if not using maven)
  - [gson-2.2.2](http://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
+ - [commons-io-2.4](http://commons.apache.org/proper/commons-io/)
+ - [commons-codec](http://commons.apache.org/proper/commons-codec/)
 
 ## Usage
 
@@ -73,6 +75,8 @@ See [SendWithUsExample.java](https://github.com/sendwithus/sendwithus_java/blob/
         senderMap,
         emailDataMap
     );
+
+
 
 ## Errors
 
