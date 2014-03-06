@@ -4,7 +4,7 @@
     <groupId>com.sendwithus</groupId>
     <artifactId>client-example</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
+    <version>1.0.6</version>
     <name>sendwithus-java-client-example</name>
     <description>SendWithUs Java Client Library Example</description>
 
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.sendwithus</groupId>
             <artifactId>java-client</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
+            <version>1.0.6</version>
         </dependency>
     </dependencies>
 
