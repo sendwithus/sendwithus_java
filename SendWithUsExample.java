@@ -10,8 +10,8 @@ import com.sendwithus.model.SendReceipt;
 
 public class SendWithUsExample {
 
-    public static final String SENDWITHUS_API_KEY = "2b84ecdb17470e29537f08d8d456b9079abcd2d6";
-    public static final String EMAIL_ID_WELCOME_EMAIL = "Mu5YHUG9Hy47MGkPtLG3cK";
+    public static final String SENDWITHUS_API_KEY = "YOUR-API-KEY-HERE";
+    public static final String EMAIL_ID_WELCOME_EMAIL = "YOUR-EMAIL-ID-HERE";
 
     public static void main(String[] args) {
 
