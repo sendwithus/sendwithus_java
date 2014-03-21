@@ -29,8 +29,8 @@ public class SendWithUs
     public static final String API_PROTO = "https";
     public static final String API_HOST = "api.sendwithus.com";
     public static final String API_PORT = "443";
-    public static final String API_VERSION = "1_0";
-    public static final String CLIENT_VERSION = "1.0.4";
+    public static final String API_VERSION = "1";
+    public static final String CLIENT_VERSION = "1.0.7";
     public static final String CLIENT_LANG = "java";
     public static final String SWU_API_HEADER = "X-SWU-API-KEY";
     public static final String SWU_CLIENT_HEADER = "X-SWU-API-CLIENT";
