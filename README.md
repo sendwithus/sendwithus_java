@@ -95,6 +95,7 @@ SendReceipt sendReceipt = sendwithusAPI.send(
 
 // Example sending the same email using the new SendWithUsSendRequest class
 SendWithUsSendRequest request = new SendWithUsSendRequest()
+    .setEmailId(EMAIL_ID_WELCOME_EMAIL)
     .setRecipient(recipientMap)
     .setSender(senderMap)
     .setEmailData(emailDataMap)
