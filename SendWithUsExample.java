@@ -68,35 +68,6 @@ public class SendWithUsExample {
         } catch (SendWithUsException e) {
             System.out.println(e.toString());
         }
-
-        // Example with Attachments
-        // String[] attachments = {"test.png", "test.png"};
-        //
-        // try {
-		//     SendWithUsSendRequest request = new SendWithUsSendRequest()
-		//			.setEmailId(EMAIL_ID_WELCOME_EMAIL)
-		//			.setRecipient(recipientMap)
-		//			.setSender(senderMap)
-		//			.setEmailData(emailDataMap)
-		//			.setAttachmentPaths(attachments);
-        //     SendReceipt sendReceipt = sendwithusAPI.send(request);
-        //     System.out.println(sendReceipt);
-        // } catch (SendWithUsException e) {
-        //     System.out.println(e.toString());
-        // }
-
-        // Deactivate Drip Campaigns for email address
-        // try {
-        //     DeactivatedDrips deactivatedDrips = sendwithusAPI.deactivateDrips(
-        //         "brad@sendwithus.com");
-        //     System.out.println(
-        //         "Deactivated " +
-        //         deactivatedDrips.getDeactivatedDripCount() +
-        //         " drip campaigns to " +
-        //         deactivatedDrips.getEmailAddress());
-        // } catch (SendWithUsException e) {
-        //     System.out.println(e.toString());
-        // }
     }
 
 }

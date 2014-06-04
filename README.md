@@ -6,7 +6,7 @@ To use the library in your own project, please follow the installation and usage
 
 **Warning**
 
-This client is a working development repository, please use the `1.0.8` jar or maven repository. _Do not_ build
+This client is a working development repository, please use the `1.1.0` jar or maven repository. _Do not_ build
 the client yourself.
 
 ## Installation
@@ -26,12 +26,12 @@ Add the following to your pom.xml:
 <dependency>
         <groupId>com.sendwithus</groupId>
         <artifactId>java-client</artifactId>
-        <version>1.0.8</version>
+        <version>1.1.0</version>
 </dependency>
 ```
 ### via wget:
 
-    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.0.8/java-client-1.0.8.jar
+    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.1.0/java-client-1.1.0.jar
 
 ### External Dependencies (if not using maven)
  - [gson-2.2.2](http://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
