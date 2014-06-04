@@ -38,10 +38,10 @@ public class SendWithUsExample {
         senderMap.put("address", "java@sendwithus.com");
         senderMap.put("reply_to", "java@sendwithus.com"); // optional
 
+        // email data in to inject in the email template
         Map<String, Object> emailDataMap = new HashMap<String, Object>();
         emailDataMap.put("first_name", "Brad");
         emailDataMap.put("link", "http://sendwithus.com/some_link");
-
 
         // Example sending a simple email
         try {
@@ -55,37 +55,19 @@ public class SendWithUsExample {
         } catch (SendWithUsException e) {
             System.out.println(e.toString());
         }
-
-        // Example with Attachments
-        // String[] attachments = {"test.png", "test.png"};
-
-        // try {
-        //     SendReceipt sendReceipt = sendwithusAPI.send(
-        //         EMAIL_ID_WELCOME_EMAIL,
-        //         recipientMap,
-        //         senderMap,
-        //         emailDataMap
-        //         null,
-        //         null,
-        //         attachments
-        //     );
-        //     System.out.println(sendReceipt);
-        // } catch (SendWithUsException e) {
-        //     System.out.println(e.toString());
-        // }
-
-        // Deactivate Drip Campaigns for email address
-        // try {
-        //     DeactivatedDrips deactivatedDrips = sendwithusAPI.deactivateDrips(
-        //         "brad@sendwithus.com");
-        //     System.out.println(
-        //         "Deactivated " +
-        //         deactivatedDrips.getDeactivatedDripCount() +
-        //         " drip campaigns to " +
-        //         deactivatedDrips.getEmailAddress());
-        // } catch (SendWithUsException e) {
-        //     System.out.println(e.toString());
-        // }
+        
+        // Example sending the same simple email using the new SendWithUsSendRequest class
+        try {
+            SendWithUsSendRequest request = new SendWithUsSendRequest()
+            	.setEmailId(EMAIL_ID_WELCOME_EMAIL)
+        		.setRecipient(recipientMap)
+        		.setSender(senderMap)
+        		.setEmailData(emailDataMap);
+            SendReceipt sendReceipt = sendwithusAPI.send(request);
+            System.out.println(sendReceipt);
+        } catch (SendWithUsException e) {
+            System.out.println(e.toString());
+        }
     }
 
 }

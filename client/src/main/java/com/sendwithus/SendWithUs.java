@@ -1,29 +1,27 @@
 package com.sendwithus;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.DeactivatedDrips;
 import com.sendwithus.model.Email;
-import com.sendwithus.model.SendReceipt;
 import com.sendwithus.model.RenderedTemplate;
+import com.sendwithus.model.SendReceipt;
 
 
+/**
+ * SendWithUs API interface.
+ * 
+ * Reference: https://github.com/sendwithus/sendwithus_java
+ */
 public class SendWithUs
 {
     public static final String API_PROTO = "https";
@@ -113,10 +111,14 @@ public class SendWithUs
         } else {
             responseStream = connection.getErrorStream();
         }
+        
+        Scanner responseScanner = new Scanner(responseStream, "UTF-8");
 
-        String responseBody = new Scanner(responseStream, "UTF-8")
+        String responseBody = responseScanner
             .useDelimiter("\\A")
             .next();
+        
+        responseScanner.close();
         responseStream.close();
 
         return responseBody;
@@ -168,6 +170,12 @@ public class SendWithUs
      * PUBLIC METHODS
      */
 
+    /**
+     * Fetches all available Email templates.
+     * 
+     * @return Array of Email IDs and names
+     * @throws SendWithUsException
+     */
     public Email[] emails()
         throws SendWithUsException
     {
@@ -180,10 +188,14 @@ public class SendWithUs
     }
 
     /**
-     * send
-     * String emailId
-     * Map<String, Object> recipient
-     * Map<String, Object> emailData
+     * Sends an Email.
+     * Represents the minimum required arguments for sending an Email.
+     * 
+     * @param emailId	The Email template's ID
+     * @param recipient	Map defining the Recipient
+     * @param emailData	Map defining the Email's variable substitutions
+     * @return			The receipt ID
+     * @throws SendWithUsException
      */
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> emailData)
@@ -193,26 +205,34 @@ public class SendWithUs
     }
 
     /**
-     * send
-     * String emailId
-     * Map<String, Object> recipient
-     * Map<String, Object> sender
-     * Map<String, Object> emailData
+     * Sends an Email.
+     * Includes Sender as a parameter.
+     * 
+     * @param emailId	The Email template's ID
+     * @param recipient	Map defining the Recipient
+     * @param sender	Map defining the Sender
+     * @param emailData	Map defining the Email's variable substitutions
+     * @return			The receipt ID
+     * @throws SendWithUsException
      */
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> sender, Map<String, Object> emailData)
             throws SendWithUsException
     {
-        return this.send(emailId, recipient, sender, emailData, null, null);
+        return this.send(emailId, recipient, sender, emailData, null);
     }
 
     /**
-     * send
-     * String emailId
-     * Map<String, Object> recipient
-     * Map<String, Object> sender
-     * Map<String, Object> emailData
-     * Array(Map<String, Object>) cc
+     * Sends an Email.
+     * Includes CC Recipients as a parameter.
+     * 
+     * @param emailId	The Email template's ID
+     * @param recipient	Map defining the Recipient
+     * @param sender	Map defining the Sender
+     * @param emailData	Map defining the Email's variable substitutions
+     * @param cc		Array of maps defining CC recipients
+     * @return			The receipt ID
+     * @throws SendWithUsException
      */
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> sender, Map<String, Object> emailData,
@@ -223,111 +243,92 @@ public class SendWithUs
     }
 
     /**
-     * send
-     * String emailId
-     * Map<String, Object> recipient
-     * Map<String, Object> sender
-     * Map<String, Object> emailData
-     * Array(Map<String, Object>) cc
-     * Array(Map<String, Object>) bcc
+     * Sends an Email.
+     * Includes BCC Recipients as a parameter.
+     * 
+     * @param emailId	The Email template's ID
+     * @param recipient	Map defining the Recipient
+     * @param sender	Map defining the Sender
+     * @param emailData	Map defining the Email's variable substitutions
+     * @param cc		Array of maps defining CC recipients
+     * @param bcc		Array of maps defining BCC recipients
+     * @return			The receipt ID
+     * @throws SendWithUsException
      */
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> sender, Map<String, Object> emailData,
             Map<String, Object>[] cc, Map<String, Object>[] bcc)
             throws SendWithUsException
     {
-        Map<String, Object> sendParams = new HashMap<String, Object>();
-        sendParams.put("email_id", emailId);
-        sendParams.put("recipient", recipient);
-        sendParams.put("email_data", emailData);
-
-        // sender is optional
-        if (sender != null)
-        {
-            sendParams.put("sender", sender);
-        }
-
-        // cc is optional
-        if (cc != null)
-        {
-            sendParams.put("cc", cc);
-        }
-
-        // bcc is optional
-        if (bcc != null)
-        {
-            sendParams.put("bcc", bcc);
-        }
-
-        String url = getURLEndpoint("send");
-
-        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
-
-        Gson gson = new Gson();
-        return gson.fromJson(response, SendReceipt.class);
+    	return this.send(emailId, recipient, sender, emailData, cc, bcc, null);
     }
 
     /**
-     * send
-     * String emailId
-     * Map<String, Object> recipient
-     * Map<String, Object> sender
-     * Map<String, Object> emailData
-     * Array(Map<String, Object>) cc
-     * Array(Map<String, Object>) bcc
-     * String attachment
+     * Sends an Email.
+     * Includes attachment filepaths as a parameter.
+     * 
+     * @param emailId			The Email template's ID
+     * @param recipient			Map defining the Recipient
+     * @param sender			Map defining the Sender
+     * @param emailData			Map defining the Email's variable substitutions
+     * @param cc				Array of maps defining CC recipients
+     * @param bcc				Array of maps defining BCC recipients
+     * @param attachment_paths	Array of filepaths for attachments
+     * @return					The receipt ID
+     * @throws SendWithUsException
      */
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> sender, Map<String, Object> emailData,
             Map<String, Object>[] cc, Map<String, Object>[] bcc, String[] attachment_paths)
             throws SendWithUsException
     {
-        Map<String, Object> sendParams = new HashMap<String, Object>();
-        sendParams.put("email_id", emailId);
-        sendParams.put("recipient", recipient);
-        sendParams.put("email_data", emailData);
+    	return this.send(emailId, recipient, sender, emailData, cc, bcc, attachment_paths, null);
+    }
 
-        // sender is optional
-        if (sender != null)
-        {
-            sendParams.put("sender", sender);
-        }
+    /**
+     * Sends an Email.
+     * Includes ESP account as a parameter.
+     * 
+     * @param emailId			The Email template's ID
+     * @param recipient			Map defining the Recipient
+     * @param sender			Map defining the Sender
+     * @param emailData			Map defining the Email's variable substitutions
+     * @param cc				Array of maps defining CC recipients
+     * @param bcc				Array of maps defining BCC recipients
+     * @param attachment_paths	Array of filepaths for attachments
+     * @param espAccount		ID specifying the ESP account to use
+     * @return					The receipt ID
+     * @throws SendWithUsException
+     */
+    public SendReceipt send(String emailId, Map<String, Object> recipient,
+            Map<String, Object> sender, Map<String, Object> emailData,
+            Map<String, Object>[] cc, Map<String, Object>[] bcc, String[] attachment_paths, String espAccount)
+            throws SendWithUsException
+    {
+    	SendWithUsSendRequest request = new SendWithUsSendRequest();
+    	request.setEmailId(emailId)
+		    	.setRecipient(recipient)
+		    	.setEmailData(emailData)
+		    	.setSender(sender)
+		    	.setCcRecipients(cc)
+		    	.setBccRecipients(bcc)
+		    	.setAttachmentPaths(attachment_paths)
+		    	.setEspAccount(espAccount);
+    	
+    	return this.send(request);
+    }
 
-        // cc is optional
-        if (cc != null)
-        {
-            sendParams.put("cc", cc);
-        }
-
-        // bcc is optional
-        if (bcc != null)
-        {
-            sendParams.put("bcc", bcc);
-        }
-
-        if (attachment_paths != null)
-        {
-            ArrayList<HashMap> files = new ArrayList<HashMap>();
-
-            for (int i = 0; i < attachment_paths.length; i++) {
-                try {
-                    File file = new File(attachment_paths[i]);
-                    byte[] byteArray = FileUtils.readFileToByteArray(file);
-                    byte[] encodedBytes = Base64.encodeBase64(byteArray);
-
-                    HashMap<String, String> file_map = new HashMap<String, String>();
-
-                    file_map.put("id", FilenameUtils.getName(attachment_paths[i]));
-                    file_map.put("data", new String(encodedBytes));
-
-                    files.add(file_map);
-
-                } catch (IOException e) {
-                    throw new SendWithUsException("Caught IOException");
-                }
-            }
-            sendParams.put("files", files);
-        }
+    /**
+     * Sends an Email defined by a request object.
+     * 
+     * @param request	The "send" request parameters
+     * @return			The receipt ID
+     * @throws SendWithUsException
+     */
+    public SendReceipt send(SendWithUsSendRequest request)
+            throws SendWithUsException
+    {
+    	Map<String, Object> sendParams = request.asMap();
 
         String url = getURLEndpoint("send");
 
@@ -338,9 +339,12 @@ public class SendWithUs
     }
 
     /**
-     * render
-     * String emailId
-     * Map<String, Object> emailData
+     * Renders a template with the given data.
+     * 
+     * @param templateId	The Email template ID
+     * @param templateData	The template data
+     * @return				The rendered template
+     * @throws SendWithUsException
      */
     public RenderedTemplate render(String templateId, Map<String, Object> templateData)
             throws SendWithUsException
@@ -358,8 +362,11 @@ public class SendWithUs
     }
 
     /**
-     * deactivateDrips
-     * String customerEmailAddress
+     * Deactivate drip campaigns for a customer.
+     * 
+     * @param customerEmailAddress	The customer's Email address
+     * @return						Response details
+     * @throws SendWithUsException
      */
     public DeactivatedDrips deactivateDrips(String customerEmailAddress)
         throws SendWithUsException
