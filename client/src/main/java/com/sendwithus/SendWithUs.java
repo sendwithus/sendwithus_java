@@ -189,7 +189,7 @@ public class SendWithUs
 
     /**
      * Sends an Email.
-     * Represents the minimum required arguments for sending and Email.
+     * Represents the minimum required arguments for sending an Email.
      * 
      * @param emailId	The Email template's ID
      * @param recipient	Map defining the Recipient
