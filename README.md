@@ -46,9 +46,14 @@ See [SendWithUsExample.java](https://github.com/sendwithus/sendwithus_java/blob/
 
 Two APIs now exist for issuing "Send" requests:
  - Legacy:  SendWithUs.send(...) methods
+
+ A collection of overloaded methods for sending an Email with various parameters.  DOES NOT SUPPORT: Tags, Inline Attachments
+
  - New:     SendWithUsSendRequest class
 
  The new method, employing SendWithUsSendRequest objects, enables a more object-oriented approach to issuing Send requests.  The objects allow you to specify only the desired request parameters, and can be re-used and mutated easily.
+
+### Examples
 
 ```java
 import java.util.HashMap;
