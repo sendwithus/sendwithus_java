@@ -6,7 +6,7 @@ To use the library in your own project, please follow the installation and usage
 
 **Warning**
 
-This client is a working development repository, please use the `1.1.0` jar or maven repository. _Do not_ build
+This client is a working development repository, please use the `1.2.0` jar or maven repository. _Do not_ build
 the client yourself.
 
 ## Installation
@@ -26,12 +26,12 @@ Add the following to your pom.xml:
 <dependency>
         <groupId>com.sendwithus</groupId>
         <artifactId>java-client</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
 </dependency>
 ```
 ### via wget:
 
-    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.1.0/java-client-1.1.0.jar
+    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.2.0/java-client-1.2.0.jar
 
 ### External Dependencies (if not using maven)
  - [gson-2.2.2](http://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
@@ -47,11 +47,25 @@ See [SendWithUsExample.java](https://github.com/sendwithus/sendwithus_java/blob/
 Two APIs now exist for issuing "Send" requests:
  - Legacy:  SendWithUs.send(...) methods
 
- A collection of overloaded methods for sending an Email with various parameters.  DOES NOT SUPPORT: Tags, Inline Attachments
+ A collection of overloaded methods for sending an Email with various parameters.  DOES NOT SUPPORT: Tags, Inline Attachments, Version Name
 
  - New:     SendWithUsSendRequest class
 
  The new method, employing SendWithUsSendRequest objects, enables a more object-oriented approach to issuing Send requests.  The objects allow you to specify only the desired request parameters, and can be re-used and mutated easily.
+
+ Provided parameter setters:
+
+  - setEmailId(String emailId)
+  - setRecipient(Map<String, Object> recipient)
+  - setEmailData(Map<String, Object> emailData)
+  - setCcRecipients(Map<String, Object>[] ccRecipients)
+  - setBccRecipients(Map<String, Object>[] bccRecipients)
+  - setSender(Map<String, Object> sender)
+  - setTags(String[] tags)
+  - setInline(Map<String, String> inline)
+  - setAttachmentPaths(String[] attachmentPaths)
+  - setEspAccount(String espAccount)
+  - setVersionName(String versionName)
 
 ### Examples
 
