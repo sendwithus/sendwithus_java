@@ -37,16 +37,16 @@ public class SendWithUsTest
 
         sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
 
-        defaultRecipientParams.put("name", "Matt");
-        defaultRecipientParams.put("address", "test@sendwithus.com");
+        defaultRecipientParams.put("name", "Unit Tests - Java");
+        defaultRecipientParams.put("address", "swunit+javaclient@sendwithus.com");
 
-        invalidRecipientParams.put("name", "Matt");
+        invalidRecipientParams.put("name", "Unit Tests - Java");
 
         defaultSenderParams.put("name", "Company Name");
-        defaultSenderParams.put("address", "company@company.com");
-        defaultSenderParams.put("reply_to", "info@company.com");
+        defaultSenderParams.put("address", "company@example.com");
+        defaultSenderParams.put("reply_to", "info@example.com");
 
-        defaultDataParams.put("first_name", "Brad");
+        defaultDataParams.put("first_name", "Java Client");
         defaultDataParams.put("link", "http://sendwithus.com/some_link");
     }
 
