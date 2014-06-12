@@ -14,7 +14,7 @@ import com.sendwithus.exception.SendWithUsException;
 
 
 /**
- * Builder-class for SendWithUs "send" API calls.
+ * POJO encapsulating parameters for SendWithUs "send" API calls.
  */
 public class SendWithUsSendRequest
 {
@@ -29,6 +29,7 @@ public class SendWithUsSendRequest
 	private Map<String, String> inline			= null;
 	private String[] attachmentPaths			= null;
 	private String espAccount					= null;
+	private String versionName					= null;
 	
 	public SendWithUsSendRequest()
 	{
@@ -99,6 +100,10 @@ public class SendWithUsSendRequest
         	sendParams.put("esp_account", espAccount);
         }
         
+        if (versionName != null) {
+        	sendParams.put("version_name", versionName);
+        }
+        
         return sendParams;
 	}
 	
@@ -149,6 +154,11 @@ public class SendWithUsSendRequest
 
 	public SendWithUsSendRequest setEspAccount(String espAccount) {
 		this.espAccount = espAccount;
+		return this;
+	}
+
+	public SendWithUsSendRequest setVersionName(String versionName) {
+		this.versionName = versionName;
 		return this;
 	}
 	

@@ -155,6 +155,26 @@ public class SendWithUsTest {
     }
 
     /**
+     *   Test send with empty esp account
+     */
+    @Test
+    public void testSendWithVersionName() throws SendWithUsException {
+    	
+        String versionName = "";
+    	
+        SendWithUsSendRequest request = new SendWithUsSendRequest()
+        		.setEmailId(EMAIL_ID)
+        		.setRecipient(defaultRecipientParams)
+        		.setSender(defaultSenderParams)
+        		.setEmailData(defaultDataParams)
+        		.setVersionName(versionName);
+
+        SendReceipt sendReceipt = sendwithusAPI.send(request);
+
+        assertNotNull(sendReceipt);
+    }
+
+    /**
      *   Test send with default request object
      */
     @Test
