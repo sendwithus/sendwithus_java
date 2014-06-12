@@ -15,7 +15,8 @@ import com.sendwithus.exception.SendWithUsException;
 /**
  * POJO encapsulating parameters for SendWithUs "send" API calls.
  */
-public class SendWithUsSendRequest {
+public class SendWithUsSendRequest
+{
 
     private String emailId = null;
     private Map<String, Object> recipient = null;
@@ -29,39 +30,47 @@ public class SendWithUsSendRequest {
     private String espAccount = null;
     private String versionName = null;
 
-    public SendWithUsSendRequest() {
+    public SendWithUsSendRequest()
+    {
     }
 
     /**
      * @return HashMap of request parameters for "send" API call
      * @throws SendWithUsException
      */
-    public Map<String, Object> asMap() throws SendWithUsException {
+    public Map<String, Object> asMap() throws SendWithUsException
+    {
         Map<String, Object> sendParams = new HashMap<String, Object>();
         sendParams.put("email_id", emailId);
         sendParams.put("recipient", recipient);
         sendParams.put("email_data", emailData);
 
         // sender is optional
-        if (sender != null) {
+        if (sender != null)
+        {
             sendParams.put("sender", sender);
         }
 
         // cc is optional
-        if ((ccRecipients != null) && (ccRecipients.length > 0)) {
+        if ((ccRecipients != null) && (ccRecipients.length > 0))
+        {
             sendParams.put("cc", ccRecipients);
         }
 
         // bcc is optional
-        if ((bccRecipients != null) && (bccRecipients.length > 0)) {
+        if ((bccRecipients != null) && (bccRecipients.length > 0))
+        {
             sendParams.put("bcc", bccRecipients);
         }
 
-        if ((attachmentPaths != null) && (attachmentPaths.length > 0)) {
+        if ((attachmentPaths != null) && (attachmentPaths.length > 0))
+        {
             ArrayList<HashMap<String, String>> files = new ArrayList<HashMap<String, String>>();
 
-            for (int i = 0; i < attachmentPaths.length; i++) {
-                try {
+            for (int i = 0; i < attachmentPaths.length; i++)
+            {
+                try
+                {
                     File file = new File(attachmentPaths[i]);
                     byte[] byteArray = FileUtils.readFileToByteArray(file);
                     byte[] encodedBytes = Base64.encodeBase64(byteArray);
@@ -74,85 +83,101 @@ public class SendWithUsSendRequest {
 
                     files.add(file_map);
 
-                } catch (IOException e) {
+                } catch (IOException e)
+                {
                     throw new SendWithUsException("Caught IOException");
                 }
             }
             sendParams.put("files", files);
         }
 
-        if ((tags != null) && (tags.length > 0)) {
+        if ((tags != null) && (tags.length > 0))
+        {
             sendParams.put("tags", tags);
         }
 
-        if (inline != null) {
+        if (inline != null)
+        {
             sendParams.put("inline", inline);
         }
 
-        if (espAccount != null) {
+        if (espAccount != null)
+        {
             sendParams.put("esp_account", espAccount);
         }
 
-        if (versionName != null) {
+        if (versionName != null)
+        {
             sendParams.put("version_name", versionName);
         }
 
         return sendParams;
     }
 
-    public SendWithUsSendRequest setEmailId(String emailId) {
+    public SendWithUsSendRequest setEmailId(String emailId)
+    {
         this.emailId = emailId;
         return this;
     }
 
-    public SendWithUsSendRequest setRecipient(Map<String, Object> recipient) {
+    public SendWithUsSendRequest setRecipient(Map<String, Object> recipient)
+    {
         this.recipient = recipient;
         return this;
     }
 
-    public SendWithUsSendRequest setEmailData(Map<String, Object> emailData) {
+    public SendWithUsSendRequest setEmailData(Map<String, Object> emailData)
+    {
         this.emailData = emailData;
         return this;
     }
 
     public SendWithUsSendRequest setCcRecipients(
-            Map<String, Object>[] ccRecipients) {
+            Map<String, Object>[] ccRecipients)
+    {
         this.ccRecipients = ccRecipients;
         return this;
     }
 
     public SendWithUsSendRequest setBccRecipients(
-            Map<String, Object>[] bccRecipients) {
+            Map<String, Object>[] bccRecipients)
+    {
         this.bccRecipients = bccRecipients;
         return this;
     }
 
-    public SendWithUsSendRequest setSender(Map<String, Object> sender) {
+    public SendWithUsSendRequest setSender(Map<String, Object> sender)
+    {
         this.sender = sender;
         return this;
     }
 
-    public SendWithUsSendRequest setTags(String[] tags) {
+    public SendWithUsSendRequest setTags(String[] tags)
+    {
         this.tags = tags;
         return this;
     }
 
-    public SendWithUsSendRequest setInline(Map<String, String> inline) {
+    public SendWithUsSendRequest setInline(Map<String, String> inline)
+    {
         this.inline = inline;
         return this;
     }
 
-    public SendWithUsSendRequest setAttachmentPaths(String[] attachmentPaths) {
+    public SendWithUsSendRequest setAttachmentPaths(String[] attachmentPaths)
+    {
         this.attachmentPaths = attachmentPaths;
         return this;
     }
 
-    public SendWithUsSendRequest setEspAccount(String espAccount) {
+    public SendWithUsSendRequest setEspAccount(String espAccount)
+    {
         this.espAccount = espAccount;
         return this;
     }
 
-    public SendWithUsSendRequest setVersionName(String versionName) {
+    public SendWithUsSendRequest setVersionName(String versionName)
+    {
         this.versionName = versionName;
         return this;
     }

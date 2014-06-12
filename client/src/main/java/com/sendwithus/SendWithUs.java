@@ -21,7 +21,8 @@ import com.sendwithus.model.SendReceipt;
  * 
  * Reference: https://github.com/sendwithus/sendwithus_java
  */
-public class SendWithUs {
+public class SendWithUs
+{
     public static final String API_PROTO = "https";
     public static final String API_HOST = "api.sendwithus.com";
     public static final String API_PORT = "443";
@@ -33,11 +34,13 @@ public class SendWithUs {
 
     private String apiKey;
 
-    public SendWithUs(String apiKey) {
+    public SendWithUs(String apiKey)
+    {
         this.apiKey = apiKey;
     }
 
-    private static String getURLEndpoint(String resourceName) {
+    private static String getURLEndpoint(String resourceName)
+    {
         return String.format("%s://%s:%s/api/v%s/%s", SendWithUs.API_PROTO,
                 SendWithUs.API_HOST, SendWithUs.API_PORT,
                 SendWithUs.API_VERSION, resourceName);
@@ -45,7 +48,8 @@ public class SendWithUs {
 
     private static javax.net.ssl.HttpsURLConnection createConnection(
             String url, String apiKey, String method, Map<String, Object> params)
-            throws IOException {
+            throws IOException
+    {
 
         URL connectionURL = new URL(url);
         javax.net.ssl.HttpsURLConnection connection = (javax.net.ssl.HttpsURLConnection) connectionURL
@@ -54,13 +58,15 @@ public class SendWithUs {
         connection.setReadTimeout(60000); // 60 seconds
         connection.setUseCaches(false);
 
-        for (Map.Entry<String, String> header : getHeaders(apiKey).entrySet()) {
+        for (Map.Entry<String, String> header : getHeaders(apiKey).entrySet())
+        {
             connection.setRequestProperty(header.getKey(), header.getValue());
         }
 
         connection.setRequestMethod(method);
 
-        if (method == "POST") {
+        if (method == "POST")
+        {
             connection.setDoOutput(true); // Note: this implicitly sets method
                                           // to POST
 
@@ -68,11 +74,14 @@ public class SendWithUs {
             String jsonParams = gson.toJson(params);
 
             OutputStream output = null;
-            try {
+            try
+            {
                 output = connection.getOutputStream();
                 output.write(jsonParams.getBytes("UTF-8"));
-            } finally {
-                if (output != null) {
+            } finally
+            {
+                if (output != null)
+                {
                     output.close();
                 }
             }
@@ -81,7 +90,8 @@ public class SendWithUs {
         return connection;
     }
 
-    private static Map<String, String> getHeaders(String apiKey) {
+    private static Map<String, String> getHeaders(String apiKey)
+    {
         Map<String, String> headers = new HashMap<String, String>();
         String clientStub = String.format("%s-%s", SendWithUs.CLIENT_LANG,
                 SendWithUs.CLIENT_VERSION);
@@ -95,14 +105,17 @@ public class SendWithUs {
     }
 
     private static String getResponseBody(
-            javax.net.ssl.HttpsURLConnection connection) throws IOException {
+            javax.net.ssl.HttpsURLConnection connection) throws IOException
+    {
 
         int responseCode = connection.getResponseCode();
         InputStream responseStream = null;
 
-        if (responseCode == 200) {
+        if (responseCode == 200)
+        {
             responseStream = connection.getInputStream();
-        } else {
+        } else
+        {
             responseStream = connection.getErrorStream();
         }
 
@@ -118,18 +131,23 @@ public class SendWithUs {
 
     private static String makeURLRequest(String url, String apiKey,
             String method, Map<String, Object> params)
-            throws SendWithUsException {
+            throws SendWithUsException
+    {
         javax.net.ssl.HttpsURLConnection connection = null;
-        try {
+        try
+        {
             connection = createConnection(url, apiKey, method, params);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new SendWithUsException("Connection error");
         }
 
-        try {
+        try
+        {
             int responseCode = connection.getResponseCode();
 
-            if (responseCode < 200 || responseCode >= 300) {
+            if (responseCode < 200 || responseCode >= 300)
+            {
                 switch (responseCode) {
                 case 400:
                     throw new SendWithUsException("Bad request: "
@@ -144,14 +162,17 @@ public class SendWithUs {
                             responseCode));
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new SendWithUsException("Caught IOException");
         }
 
         String response = "";
-        try {
+        try
+        {
             response = getResponseBody(connection);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new SendWithUsException("Caught IOException in response");
         }
 
@@ -168,7 +189,8 @@ public class SendWithUs {
      * @return Array of Email IDs and names
      * @throws SendWithUsException
      */
-    public Email[] emails() throws SendWithUsException {
+    public Email[] emails() throws SendWithUsException
+    {
         String url = getURLEndpoint("emails");
 
         String response = makeURLRequest(url, this.apiKey, "GET", null);
@@ -191,7 +213,8 @@ public class SendWithUs {
      * @throws SendWithUsException
      */
     public SendReceipt send(String emailId, Map<String, Object> recipient,
-            Map<String, Object> emailData) throws SendWithUsException {
+            Map<String, Object> emailData) throws SendWithUsException
+    {
         return this.send(emailId, recipient, null, emailData);
     }
 
@@ -211,7 +234,8 @@ public class SendWithUs {
      */
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> sender, Map<String, Object> emailData)
-            throws SendWithUsException {
+            throws SendWithUsException
+    {
         return this.send(emailId, recipient, sender, emailData, null);
     }
 
@@ -233,7 +257,8 @@ public class SendWithUs {
      */
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> sender, Map<String, Object> emailData,
-            Map<String, Object>[] cc) throws SendWithUsException {
+            Map<String, Object>[] cc) throws SendWithUsException
+    {
         return this.send(emailId, recipient, sender, emailData, cc, null);
     }
 
@@ -258,7 +283,8 @@ public class SendWithUs {
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> sender, Map<String, Object> emailData,
             Map<String, Object>[] cc, Map<String, Object>[] bcc)
-            throws SendWithUsException {
+            throws SendWithUsException
+    {
         return this.send(emailId, recipient, sender, emailData, cc, bcc, null);
     }
 
@@ -285,7 +311,8 @@ public class SendWithUs {
     public SendReceipt send(String emailId, Map<String, Object> recipient,
             Map<String, Object> sender, Map<String, Object> emailData,
             Map<String, Object>[] cc, Map<String, Object>[] bcc,
-            String[] attachment_paths) throws SendWithUsException {
+            String[] attachment_paths) throws SendWithUsException
+    {
         return this.send(emailId, recipient, sender, emailData, cc, bcc,
                 attachment_paths, null);
     }
@@ -316,7 +343,8 @@ public class SendWithUs {
             Map<String, Object> sender, Map<String, Object> emailData,
             Map<String, Object>[] cc, Map<String, Object>[] bcc,
             String[] attachment_paths, String espAccount)
-            throws SendWithUsException {
+            throws SendWithUsException
+    {
         SendWithUsSendRequest request = new SendWithUsSendRequest();
         request.setEmailId(emailId).setRecipient(recipient)
                 .setEmailData(emailData).setSender(sender).setCcRecipients(cc)
@@ -335,7 +363,8 @@ public class SendWithUs {
      * @throws SendWithUsException
      */
     public SendReceipt send(SendWithUsSendRequest request)
-            throws SendWithUsException {
+            throws SendWithUsException
+    {
         Map<String, Object> sendParams = request.asMap();
 
         String url = getURLEndpoint("send");
@@ -357,7 +386,8 @@ public class SendWithUs {
      * @throws SendWithUsException
      */
     public RenderedTemplate render(String templateId,
-            Map<String, Object> templateData) throws SendWithUsException {
+            Map<String, Object> templateData) throws SendWithUsException
+    {
         Map<String, Object> sendParams = new HashMap<String, Object>();
         sendParams.put("template_id", templateId);
         sendParams.put("template_data", templateData);
@@ -379,7 +409,8 @@ public class SendWithUs {
      * @throws SendWithUsException
      */
     public DeactivatedDrips deactivateDrips(String customerEmailAddress)
-            throws SendWithUsException {
+            throws SendWithUsException
+    {
         Map<String, Object> sendParams = new HashMap<String, Object>();
         sendParams.put("email_address", customerEmailAddress);
 

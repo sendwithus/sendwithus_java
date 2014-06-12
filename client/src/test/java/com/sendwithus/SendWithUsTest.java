@@ -18,7 +18,8 @@ import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
 
 @RunWith(JUnit4.class)
-public class SendWithUsTest {
+public class SendWithUsTest
+{
 
     public static final String SENDWITHUS_API_KEY = "THIS_IS_A_TEST_API_KEY";
     public static final String EMAIL_ID = "test_fixture_1";
@@ -31,7 +32,8 @@ public class SendWithUsTest {
     static Map<String, Object> defaultDataParams = new HashMap<String, Object>();
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp()
+    {
 
         sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
 
@@ -52,7 +54,8 @@ public class SendWithUsTest {
      * Test get emails
      */
     @Test
-    public void testGetEmails() throws SendWithUsException {
+    public void testGetEmails() throws SendWithUsException
+    {
 
         Email[] emails = sendwithusAPI.emails();
 
@@ -63,7 +66,8 @@ public class SendWithUsTest {
      * Test simple send
      */
     @Test
-    public void testSimpleSend() throws SendWithUsException {
+    public void testSimpleSend() throws SendWithUsException
+    {
 
         SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
                 defaultRecipientParams, defaultDataParams);
@@ -75,7 +79,8 @@ public class SendWithUsTest {
      * Test send with sender info
      */
     @Test
-    public void testSendWithSender() throws SendWithUsException {
+    public void testSendWithSender() throws SendWithUsException
+    {
 
         SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
                 defaultRecipientParams, defaultSenderParams, defaultDataParams);
@@ -87,7 +92,8 @@ public class SendWithUsTest {
      * Test send with attachment
      */
     @Test
-    public void testSendWithAttachment() throws SendWithUsException {
+    public void testSendWithAttachment() throws SendWithUsException
+    {
 
         String[] str = { "test.png", "test.png" };
 
@@ -102,7 +108,8 @@ public class SendWithUsTest {
      * Test send with empty attachment list
      */
     @Test
-    public void testSendWithEmptyAttachment() throws SendWithUsException {
+    public void testSendWithEmptyAttachment() throws SendWithUsException
+    {
 
         String[] str = {};
 
@@ -117,7 +124,8 @@ public class SendWithUsTest {
      * Test send with empty esp account
      */
     @Test
-    public void testSendWithEspAccount() throws SendWithUsException {
+    public void testSendWithEspAccount() throws SendWithUsException
+    {
 
         String espAccount = "";
 
@@ -132,7 +140,8 @@ public class SendWithUsTest {
      * Test send with empty esp account
      */
     @Test
-    public void testSendWithVersionName() throws SendWithUsException {
+    public void testSendWithVersionName() throws SendWithUsException
+    {
 
         String versionName = "";
 
@@ -150,7 +159,8 @@ public class SendWithUsTest {
      * Test send with default request object
      */
     @Test
-    public void testSendWithSWURequestObject() throws SendWithUsException {
+    public void testSendWithSWURequestObject() throws SendWithUsException
+    {
 
         String espAccount = "";
 
@@ -168,7 +178,8 @@ public class SendWithUsTest {
      * Test send with incomplete receiver
      */
     @Test(expected = SendWithUsException.class)
-    public void testSendIncomplete() throws SendWithUsException {
+    public void testSendIncomplete() throws SendWithUsException
+    {
         sendwithusAPI.send(EMAIL_ID, invalidRecipientParams, defaultDataParams);
 
     }
@@ -177,7 +188,8 @@ public class SendWithUsTest {
      * Test invalid API key
      */
     @Test(expected = SendWithUsException.class)
-    public void testSendInvalidAPIKey() throws SendWithUsException {
+    public void testSendInvalidAPIKey() throws SendWithUsException
+    {
 
         SendWithUs invalidAPI = new SendWithUs("INVALID_KEY");
 
@@ -188,7 +200,8 @@ public class SendWithUsTest {
      * Test invalid email_id
      */
     @Test(expected = SendWithUsException.class)
-    public void testSendInvalidEmailId() throws SendWithUsException {
+    public void testSendInvalidEmailId() throws SendWithUsException
+    {
         sendwithusAPI.send("INVALID_EMAIL_ID", defaultRecipientParams,
                 defaultDataParams);
     }
@@ -197,7 +210,8 @@ public class SendWithUsTest {
      * Test send Array in data params
      */
     @Test
-    public void testSendArrayInData() throws SendWithUsException {
+    public void testSendArrayInData() throws SendWithUsException
+    {
 
         defaultDataParams.put("array", new String[] { "send", "with", "us" });
 
@@ -211,7 +225,8 @@ public class SendWithUsTest {
      * Test send ArrayList in data params
      */
     @Test
-    public void testSendArrayListInData() throws SendWithUsException {
+    public void testSendArrayListInData() throws SendWithUsException
+    {
 
         ArrayList<String> arrayList = new ArrayList<String>();
         arrayList.add("send");
@@ -230,7 +245,8 @@ public class SendWithUsTest {
      * Test render
      */
     @Test
-    public void testRender() throws SendWithUsException {
+    public void testRender() throws SendWithUsException
+    {
 
         RenderedTemplate renderedTemplate = sendwithusAPI.render(EMAIL_ID,
                 defaultDataParams);
@@ -242,7 +258,8 @@ public class SendWithUsTest {
      * Test invalid email_id
      */
     @Test(expected = SendWithUsException.class)
-    public void testRenderInvalidEmailId() throws SendWithUsException {
+    public void testRenderInvalidEmailId() throws SendWithUsException
+    {
         sendwithusAPI.render("INVALID_EMAIL_ID", defaultDataParams);
     }
 
