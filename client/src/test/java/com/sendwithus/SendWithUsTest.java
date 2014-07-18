@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.sendwithus.exception.SendWithUsException;
+import com.sendwithus.model.CustomerReceipt;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
@@ -261,6 +262,22 @@ public class SendWithUsTest
     public void testRenderInvalidEmailId() throws SendWithUsException
     {
         sendwithusAPI.render("INVALID_EMAIL_ID", defaultDataParams);
+    }
+
+    /**
+     * Test Create/Update customer
+     */
+    @Test
+    public void testCreateUpdateCustomer() throws SendWithUsException
+    {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("first_name", "Matt");
+
+        CustomerReceipt receipt = sendwithusAPI.createUpdateCustomer(
+                "matt@sendwithus.com",
+                params);
+
+        assertNotNull(receipt );
     }
 
 }

@@ -11,6 +11,7 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sendwithus.exception.SendWithUsException;
+import com.sendwithus.model.CustomerReceipt;
 import com.sendwithus.model.DeactivatedDrips;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.RenderedTemplate;
@@ -420,5 +421,30 @@ public class SendWithUs
 
         Gson gson = new Gson();
         return gson.fromJson(response, DeactivatedDrips.class);
+    }
+
+    /**
+     * Creates or updates a customer record.
+     * 
+     * @param customerEmailAddress
+     *            The customer's Email address
+     * @param customerData
+     *            The customers data
+     * @return Response details
+     * @throws SendWithUsException
+     */
+    public CustomerReceipt createUpdateCustomer(String customerEmailAddress,
+            Map<String, Object> customerData)
+            throws SendWithUsException
+    {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("data", customerData);
+
+        String url = getURLEndpoint("customers/" + customerEmailAddress);
+
+        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, CustomerReceipt.class);
     }
 }
