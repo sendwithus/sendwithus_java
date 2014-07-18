@@ -1,209 +1,232 @@
 package com.sendwithus;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
-
 import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.Email;
+import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
 
 @RunWith(JUnit4.class)
-public class SendWithUsTest {
+public class SendWithUsTest
+{
 
     public static final String SENDWITHUS_API_KEY = "THIS_IS_A_TEST_API_KEY";
     public static final String EMAIL_ID = "test_fixture_1";
 
     static SendWithUs sendwithusAPI;
-   
+
     static Map<String, Object> defaultRecipientParams = new HashMap<String, Object>();
     static Map<String, Object> invalidRecipientParams = new HashMap<String, Object>();
     static Map<String, Object> defaultSenderParams = new HashMap<String, Object>();
     static Map<String, Object> defaultDataParams = new HashMap<String, Object>();
-    static List<Map<String, Object>> defaultCC = new ArrayList<HashMap<String, Object>>();
-    static List<Map<String, Object>> defaultBCC = new ArrayList<HashMap<String, Object>>();
-    
+
     @BeforeClass
-    public static void setUp() {
-        
+    public static void setUp()
+    {
+
         sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
 
-        HashMap<String, Object> cc = new HashMap<String, Object>();
-        cc.put("name", "Test CC");
-        cc.put("address", "test+cc@company.com");
+        defaultRecipientParams.put("name", "Unit Tests - Java");
+        defaultRecipientParams.put("address", "swunit+javaclient@sendwithus.com");
 
-        HashMap<String, Object> bcc = new HashMap<String, Object>();
-        bcc.put("name", "Test BCC");
-        bcc.put("address", "test+bcc@company.com");
-        defaultBCC.add(bcc);
-        defaultBCC.add(bcc);
+        invalidRecipientParams.put("name", "Unit Tests - Java");
 
-        defaultRecipientParams.put("name", "Matt");
-        defaultRecipientParams.put("address", "us@sendwithus.com");
-
-        invalidRecipientParams.put("name", "Matt");
-        
         defaultSenderParams.put("name", "Company Name");
-        defaultSenderParams.put("address", "company@company.com");
-        defaultSenderParams.put("reply_to", "info@company.com");
+        defaultSenderParams.put("address", "company@example.com");
+        defaultSenderParams.put("reply_to", "info@example.com");
 
-        defaultDataParams.put("first_name", "Brad");
+        defaultDataParams.put("first_name", "Java Client");
         defaultDataParams.put("link", "http://sendwithus.com/some_link");
     }
 
     /**
-     *   Test get emails
+     * Test get emails
      */
     @Test
-    public void testGetEmails() throws SendWithUsException {
-        
+    public void testGetEmails() throws SendWithUsException
+    {
+
         Email[] emails = sendwithusAPI.emails();
 
         assertTrue(emails.length > 0);
     }
 
     /**
-     *   Test simple send
+     * Test simple send
      */
     @Test
-    public void testSimpleSend() throws SendWithUsException {
-        
-        SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID, 
-            defaultRecipientParams,
-            defaultDataParams
-        );
-        
-        assertNotNull(sendReceipt);
-    }
-    
-    /**
-     *   Test send with sender info
-     */
-    @Test
-    public void testSendWithSender() throws SendWithUsException {
-         
-        SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID, 
-            defaultRecipientParams,
-            defaultSenderParams,
-            defaultDataParams
-        );
-        
+    public void testSimpleSend() throws SendWithUsException
+    {
+
+        SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
+                defaultRecipientParams, defaultDataParams);
+
         assertNotNull(sendReceipt);
     }
 
     /**
-     *   Test send with cc info
+     * Test send with sender info
      */
     @Test
-    public void testSendWithCC() throws SendWithUsException {
-         
-        SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID, 
-            defaultRecipientParams,
-            null,
-            defaultDataParams,
-            defaultCC
-        );
-        
+    public void testSendWithSender() throws SendWithUsException
+    {
+
+        SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
+                defaultRecipientParams, defaultSenderParams, defaultDataParams);
+
         assertNotNull(sendReceipt);
     }
 
     /**
-     *   Test send with cc info
+     * Test send with attachment
      */
     @Test
-    public void testSendWithBCC() throws SendWithUsException {
-         
-        SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID, 
-            defaultRecipientParams,
-            null,
-            defaultDataParams,
-            null,
-            defaultBCC
-        );
-        
+    public void testSendWithAttachment() throws SendWithUsException
+    {
+
+        String[] str = { "test.png", "test.png" };
+
+        SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
+                defaultRecipientParams, defaultSenderParams, defaultDataParams,
+                null, null, str);
+
         assertNotNull(sendReceipt);
     }
 
     /**
-     *   Test send with incomplete receiver
+     * Test send with empty attachment list
      */
-    @Test(expected=SendWithUsException.class)
-    public void testSendIncomplete() throws SendWithUsException {
-    
-        SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID, 
-            invalidRecipientParams,
-            defaultDataParams
-        );
-   
+    @Test
+    public void testSendWithEmptyAttachment() throws SendWithUsException
+    {
+
+        String[] str = {};
+
+        SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
+                defaultRecipientParams, defaultSenderParams, defaultDataParams,
+                null, null, str);
+
+        assertNotNull(sendReceipt);
     }
 
     /**
-     *   Test invalid API key
+     * Test send with empty esp account
      */
-    @Test(expected=SendWithUsException.class)
-    public void testSendInvalidAPIKey() throws SendWithUsException {
+    @Test
+    public void testSendWithEspAccount() throws SendWithUsException
+    {
+
+        String espAccount = "";
+
+        SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
+                defaultRecipientParams, defaultSenderParams, defaultDataParams,
+                null, null, null, espAccount);
+
+        assertNotNull(sendReceipt);
+    }
+
+    /**
+     * Test send with empty esp account
+     */
+    @Test
+    public void testSendWithVersionName() throws SendWithUsException
+    {
+
+        String versionName = "";
+
+        SendWithUsSendRequest request = new SendWithUsSendRequest()
+                .setEmailId(EMAIL_ID).setRecipient(defaultRecipientParams)
+                .setSender(defaultSenderParams).setEmailData(defaultDataParams)
+                .setVersionName(versionName);
+
+        SendReceipt sendReceipt = sendwithusAPI.send(request);
+
+        assertNotNull(sendReceipt);
+    }
+
+    /**
+     * Test send with default request object
+     */
+    @Test
+    public void testSendWithSWURequestObject() throws SendWithUsException
+    {
+
+        String espAccount = "";
+
+        SendWithUsSendRequest request = new SendWithUsSendRequest()
+                .setEmailId(EMAIL_ID).setRecipient(defaultRecipientParams)
+                .setSender(defaultSenderParams).setEmailData(defaultDataParams)
+                .setEspAccount(espAccount);
+
+        SendReceipt sendReceipt = sendwithusAPI.send(request);
+
+        assertNotNull(sendReceipt);
+    }
+
+    /**
+     * Test send with incomplete receiver
+     */
+    @Test(expected = SendWithUsException.class)
+    public void testSendIncomplete() throws SendWithUsException
+    {
+        sendwithusAPI.send(EMAIL_ID, invalidRecipientParams, defaultDataParams);
+
+    }
+
+    /**
+     * Test invalid API key
+     */
+    @Test(expected = SendWithUsException.class)
+    public void testSendInvalidAPIKey() throws SendWithUsException
+    {
 
         SendWithUs invalidAPI = new SendWithUs("INVALID_KEY");
-        
-        SendReceipt sendReceipt = invalidAPI.send(
-            EMAIL_ID, 
-            defaultRecipientParams,
-            defaultDataParams
-        );
+
+        invalidAPI.send(EMAIL_ID, defaultRecipientParams, defaultDataParams);
     }
 
     /**
-     *   Test invalid email_id
+     * Test invalid email_id
      */
-    @Test(expected=SendWithUsException.class)
-    public void testSendInvalidEmailId() throws SendWithUsException {
-
-        SendReceipt sendReceipt = sendwithusAPI.send(
-            "INVALID_EMAIL_ID", 
-            defaultRecipientParams,
-            defaultDataParams
-        );
+    @Test(expected = SendWithUsException.class)
+    public void testSendInvalidEmailId() throws SendWithUsException
+    {
+        sendwithusAPI.send("INVALID_EMAIL_ID", defaultRecipientParams,
+                defaultDataParams);
     }
 
     /**
-    *   Test send Array in data params
-    */
+     * Test send Array in data params
+     */
     @Test
-    public void testSendArrayInData() throws SendWithUsException {
+    public void testSendArrayInData() throws SendWithUsException
+    {
 
-        defaultDataParams.put("array", new String[]{"send", "with", "us"});
+        defaultDataParams.put("array", new String[] { "send", "with", "us" });
 
-        SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID, 
-            defaultRecipientParams,
-            defaultDataParams
-        );
-        
+        SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
+                defaultRecipientParams, defaultDataParams);
+
         assertNotNull(sendReceipt);
     }
 
     /**
-    *   Test send ArrayList in data params
-    */
+     * Test send ArrayList in data params
+     */
     @Test
-    public void testSendArrayListInData() throws SendWithUsException {
+    public void testSendArrayListInData() throws SendWithUsException
+    {
 
         ArrayList<String> arrayList = new ArrayList<String>();
         arrayList.add("send");
@@ -212,13 +235,32 @@ public class SendWithUsTest {
 
         defaultDataParams.put("arrayList", arrayList);
 
-        SendReceipt sendReceipt = sendwithusAPI.send(
-            EMAIL_ID, 
-            defaultRecipientParams,
-            defaultDataParams
-        );
-        
+        SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
+                defaultRecipientParams, defaultDataParams);
+
         assertNotNull(sendReceipt);
+    }
+
+    /**
+     * Test render
+     */
+    @Test
+    public void testRender() throws SendWithUsException
+    {
+
+        RenderedTemplate renderedTemplate = sendwithusAPI.render(EMAIL_ID,
+                defaultDataParams);
+
+        assertNotNull(renderedTemplate);
+    }
+
+    /**
+     * Test invalid email_id
+     */
+    @Test(expected = SendWithUsException.class)
+    public void testRenderInvalidEmailId() throws SendWithUsException
+    {
+        sendwithusAPI.render("INVALID_EMAIL_ID", defaultDataParams);
     }
 
 }
