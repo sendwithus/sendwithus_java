@@ -1,26 +1,21 @@
 package com.sendwithus.model;
 
 
-public class DeactivatedDrips {
+public class DeactivatedDrips extends APIReceipt {
 
-    Boolean     success;
-    String      status;
-    String      email_address;
-    int         unsubscribed_count;
-
-    public Boolean getSuccess() {
-        return this.success;
-    }
-
-    public String getStatus() {
-        return this.status;
-    }
+    private String email_address; // must match JSON response
+    private int unsubscribed_count; // must match JSON response
 
     public String getEmailAddress() {
-        return this.email_address;
+        return email_address;
     }
 
     public int getDeactivatedDripCount() {
-        return this.unsubscribed_count;
+        return unsubscribed_count;
     }
+
+    public String toString() {
+        return String.format("DeactivatedDrips[%s]", getEmailAddress());
+    }
+    
 }

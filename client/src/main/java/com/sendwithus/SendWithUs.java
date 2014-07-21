@@ -8,9 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import java.net.HttpURLConnection;
+import javax.net.ssl.HttpsURLConnection;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sendwithus.exception.SendWithUsException;
+import com.sendwithus.model.CustomerReceipt;
 import com.sendwithus.model.DeactivatedDrips;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.RenderedTemplate;
@@ -23,9 +27,11 @@ import com.sendwithus.model.SendReceipt;
  */
 public class SendWithUs
 {
+    
     public static final String API_PROTO = "https";
     public static final String API_HOST = "api.sendwithus.com";
     public static final String API_PORT = "443";
+    
     public static final String API_VERSION = "1";
     public static final String CLIENT_VERSION = "1.0.7";
     public static final String CLIENT_LANG = "java";
@@ -46,14 +52,21 @@ public class SendWithUs
                 SendWithUs.API_VERSION, resourceName);
     }
 
-    private static javax.net.ssl.HttpsURLConnection createConnection(
+    private static HttpURLConnection createConnection(
             String url, String apiKey, String method, Map<String, Object> params)
             throws IOException
     {
 
         URL connectionURL = new URL(url);
-        javax.net.ssl.HttpsURLConnection connection = (javax.net.ssl.HttpsURLConnection) connectionURL
-                .openConnection();
+        HttpURLConnection connection;
+        
+        /* Detect and allow HTTP connections (useful for testing) */
+        if (connectionURL.getProtocol().equals("https")) {
+            connection = (HttpsURLConnection) connectionURL.openConnection();
+        } else {
+            connection = (HttpURLConnection) connectionURL.openConnection();
+        }
+        
         connection.setConnectTimeout(30000); // 30 seconds
         connection.setReadTimeout(60000); // 60 seconds
         connection.setUseCaches(false);
@@ -104,8 +117,7 @@ public class SendWithUs
         return headers;
     }
 
-    private static String getResponseBody(
-            javax.net.ssl.HttpsURLConnection connection) throws IOException
+    private static String getResponseBody(HttpURLConnection connection) throws IOException
     {
 
         int responseCode = connection.getResponseCode();
@@ -133,7 +145,7 @@ public class SendWithUs
             String method, Map<String, Object> params)
             throws SendWithUsException
     {
-        javax.net.ssl.HttpsURLConnection connection = null;
+        HttpURLConnection connection = null;
         try
         {
             connection = createConnection(url, apiKey, method, params);
@@ -188,10 +200,29 @@ public class SendWithUs
      * 
      * @return Array of Email IDs and names
      * @throws SendWithUsException
+     * 
+     * @deprecated use templates() instead.
      */
+    @Deprecated
     public Email[] emails() throws SendWithUsException
     {
         String url = getURLEndpoint("emails");
+
+        String response = makeURLRequest(url, this.apiKey, "GET", null);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, Email[].class);
+    }
+
+    /**
+     * Fetches all available Email templates.
+     * 
+     * @return Array of Email IDs and names
+     * @throws SendWithUsException
+     */
+    public Email[] templates() throws SendWithUsException
+    {
+        String url = getURLEndpoint("templates");
 
         String response = makeURLRequest(url, this.apiKey, "GET", null);
 
@@ -421,4 +452,31 @@ public class SendWithUs
         Gson gson = new Gson();
         return gson.fromJson(response, DeactivatedDrips.class);
     }
+
+    /**
+     * Creates or updates a customer record based on Email address.
+     * 
+     * @param customerEmailAddress
+     *            The customer's Email address
+     * @param customerData
+     *            The customer's data
+     * @return Response details
+     * @throws SendWithUsException
+     */
+    public CustomerReceipt createUpdateCustomer(String customerEmailAddress,
+            Map<String, Object> customerData)
+            throws SendWithUsException
+    {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("email", customerEmailAddress);
+        sendParams.put("data", customerData);
+
+        String url = getURLEndpoint("customers");
+
+        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, CustomerReceipt.class);
+    }
+
 }
