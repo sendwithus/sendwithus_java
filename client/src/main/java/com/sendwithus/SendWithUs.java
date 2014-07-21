@@ -215,6 +215,22 @@ public class SendWithUs
     }
 
     /**
+     * Fetches all available Email templates.
+     * 
+     * @return Array of Email IDs and names
+     * @throws SendWithUsException
+     */
+    public Email[] templates() throws SendWithUsException
+    {
+        String url = getURLEndpoint("templates");
+
+        String response = makeURLRequest(url, this.apiKey, "GET", null);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, Email[].class);
+    }
+
+    /**
      * Sends an Email. Represents the minimum required arguments for sending an
      * Email.
      * 

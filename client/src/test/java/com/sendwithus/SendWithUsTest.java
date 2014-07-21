@@ -81,6 +81,20 @@ public class SendWithUsTest
     }
 
     /**
+     * Test get templates
+     */
+    @Test
+    public void testGetTemplates() throws SendWithUsException
+    {
+        Email[] emails = sendwithusAPI.templates();
+
+        assertTrue(emails.length > 0);
+        for (Email emailReceipt : emails) {
+            assertSuccessfulAPIResponse(emailReceipt);
+        }
+    }
+
+    /**
      * Test simple send
      */
     @Test
