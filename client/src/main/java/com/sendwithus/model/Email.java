@@ -1,19 +1,21 @@
 package com.sendwithus.model;
 
 
-public class Email {
-    private String id;
-    private String name;
+public class Email extends APIResponse {
+    
+    private String id; // must match JSON response
+    private String name; // must match JSON response
 
     public String getID() {
-        return this.id;
+        return id;
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public String toString() {
-        return String.format("'%s' (ID: %s)", this.name, this.id);
+        return String.format("'%s' (ID: %s)", getName(), getID());
     }
+    
 }

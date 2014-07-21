@@ -1,31 +1,33 @@
 package com.sendwithus.model;
-import java.util.Map;
 
 
-public class CustomerReceipt {
+public class CustomerReceipt extends APIReceipt {
 
-    Boolean     success;
-    String      status;
-    Customer customer;
+    private Customer customer; // must match JSON response
 
     public static class Customer {
-        String      email;
-        long        created;
+        private String email; // must match JSON response
+        private long created; // must match JSON response
 
         public String getEmail() {
-            return this.email;
+            return email;
         }
 
         public long getCreated() {
-            return this.created;
+            return created;
         }
     }
 
-    public String getEmail() {
-        return this.customer.getEmail();
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public String getCustomerEmail() {
+        return customer.getEmail();
     }
 
     public String toString() {
-        return String.format("CustomerReceipt[%s]", this.customer.getEmail());
+        return String.format("CustomerReceipt[%s]", getCustomer().getEmail());
     }
+    
 }
