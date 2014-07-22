@@ -42,7 +42,7 @@ Add the following to your pom.xml:
 
 ### General
 
-See [SendWithUsExample.java](https://github.com/sendwithus/sendwithus_java/blob/master/example/src/main/java/com/sendwithus/client/example/SendWithUsExample.java) for full usage.
+See [SendWithUsExample.java](https://github.com/sendwithus/sendwithus_java/blob/master/SendWithUsExample.java) for full usage.
 
 Two APIs now exist for issuing "Send" requests:
  - Legacy:  SendWithUs.send(...) methods
