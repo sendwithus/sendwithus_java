@@ -10,7 +10,7 @@ public class SnippetReceipt extends APIReceipt {
     }
     
     public String toString() {
-        return "";
+        return String.format("SnippetReceipt[%s]", getSnippet().getId());
     }
 
 }

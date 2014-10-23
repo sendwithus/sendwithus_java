@@ -9,7 +9,7 @@ package com.sendwithus.model;
 public class APIReceipt extends APIResponse {
     
     protected Boolean success; // must match JSON response
-    protected String status; // must match JSON responsew
+    protected String status; // must match JSON response
 
     public Boolean getSuccess() {
         return success;

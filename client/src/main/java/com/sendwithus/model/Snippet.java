@@ -24,7 +24,7 @@ public class Snippet {
     }
     
     public String toString() {
-        return "";
+        return String.format("Snippet[%s]", getId());
     }
 
 }
