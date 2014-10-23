@@ -3,22 +3,25 @@ package com.sendwithus;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import java.net.HttpURLConnection;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sendwithus.exception.SendWithUsException;
+import com.sendwithus.model.APIReceipt;
 import com.sendwithus.model.CustomerReceipt;
 import com.sendwithus.model.DeactivatedDrips;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
+import com.sendwithus.model.Snippet;
+import com.sendwithus.model.SnippetReceipt;
 
 /**
  * SendWithUs API interface.
@@ -31,6 +34,12 @@ public class SendWithUs
     public static final String API_PROTO = "https";
     public static final String API_HOST = "api.sendwithus.com";
     public static final String API_PORT = "443";
+
+    /*
+    public static final String API_PROTO = "http";
+    public static final String API_HOST = "localhost";
+    public static final String API_PORT = "8000";
+     */
     
     public static final String API_VERSION = "1";
     public static final String CLIENT_VERSION = "1.0.7";
@@ -45,18 +54,17 @@ public class SendWithUs
         this.apiKey = apiKey;
     }
 
-    private static String getURLEndpoint(String resourceName)
+    private String getURLEndpoint(String resourceName)
     {
         return String.format("%s://%s:%s/api/v%s/%s", SendWithUs.API_PROTO,
                 SendWithUs.API_HOST, SendWithUs.API_PORT,
                 SendWithUs.API_VERSION, resourceName);
     }
 
-    private static HttpURLConnection createConnection(
-            String url, String apiKey, String method, Map<String, Object> params)
+    private HttpURLConnection createConnection(
+            String url, String method, Map<String, Object> params)
             throws IOException
     {
-
         URL connectionURL = new URL(url);
         HttpURLConnection connection;
         
@@ -103,7 +111,7 @@ public class SendWithUs
         return connection;
     }
 
-    private static Map<String, String> getHeaders(String apiKey)
+    private Map<String, String> getHeaders(String apiKey)
     {
         Map<String, String> headers = new HashMap<String, String>();
         String clientStub = String.format("%s-%s", SendWithUs.CLIENT_LANG,
@@ -117,9 +125,8 @@ public class SendWithUs
         return headers;
     }
 
-    private static String getResponseBody(HttpURLConnection connection) throws IOException
+    private String getResponseBody(HttpURLConnection connection) throws IOException
     {
-
         int responseCode = connection.getResponseCode();
         InputStream responseStream = null;
 
@@ -141,14 +148,17 @@ public class SendWithUs
         return responseBody;
     }
 
-    private static String makeURLRequest(String url, String apiKey,
-            String method, Map<String, Object> params)
-            throws SendWithUsException
+    protected String makeURLRequest(String url, String method) throws SendWithUsException
+    {
+        return makeURLRequest(url, method, null);
+    }
+
+    protected String makeURLRequest(String url, String method, Map<String, Object> params) throws SendWithUsException
     {
         HttpURLConnection connection = null;
         try
         {
-            connection = createConnection(url, apiKey, method, params);
+            connection = createConnection(url, method, params);
         } catch (IOException e)
         {
             throw new SendWithUsException("Connection error");
@@ -208,7 +218,7 @@ public class SendWithUs
     {
         String url = getURLEndpoint("emails");
 
-        String response = makeURLRequest(url, this.apiKey, "GET", null);
+        String response = makeURLRequest(url, "GET", null);
 
         Gson gson = new Gson();
         return gson.fromJson(response, Email[].class);
@@ -224,7 +234,7 @@ public class SendWithUs
     {
         String url = getURLEndpoint("templates");
 
-        String response = makeURLRequest(url, this.apiKey, "GET", null);
+        String response = makeURLRequest(url, "GET", null);
 
         Gson gson = new Gson();
         return gson.fromJson(response, Email[].class);
@@ -400,7 +410,7 @@ public class SendWithUs
 
         String url = getURLEndpoint("send");
 
-        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+        String response = makeURLRequest(url, "POST", sendParams);
 
         Gson gson = new Gson();
         return gson.fromJson(response, SendReceipt.class);
@@ -425,7 +435,7 @@ public class SendWithUs
 
         String url = getURLEndpoint("render");
 
-        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+        String response = makeURLRequest(url, "POST", sendParams);
 
         Gson gson = new Gson();
         return gson.fromJson(response, RenderedTemplate.class);
@@ -447,7 +457,7 @@ public class SendWithUs
 
         String url = getURLEndpoint("drips/deactivate");
 
-        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+        String response = makeURLRequest(url, "POST", sendParams);
 
         Gson gson = new Gson();
         return gson.fromJson(response, DeactivatedDrips.class);
@@ -473,10 +483,110 @@ public class SendWithUs
 
         String url = getURLEndpoint("customers");
 
-        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+        String response = makeURLRequest(url, "POST", sendParams);
 
         Gson gson = new Gson();
         return gson.fromJson(response, CustomerReceipt.class);
+    }
+    
+    /**
+     * Gets all snippets for your account.
+     * 
+     * @return Array of Snippet objects
+     * @throws SendWithUsException
+     */
+    public Snippet[] getSnippets() throws SendWithUsException {
+        String url = getURLEndpoint("snippets");
+
+        String response = makeURLRequest(url, "GET");
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, Snippet[].class);
+    }
+    
+    /**
+     * Get a specific snippet for your account.
+     * 
+     * @param snippetId
+     *              The snippet's ID
+     * @return Snippet object
+     * @throws SendWithUsException
+     */
+    public Snippet getSnippet(String snippetId) throws SendWithUsException {
+        String resource = String.format("snippets/%s", snippetId);
+        String url = getURLEndpoint(resource);
+
+        String response = makeURLRequest(url, "GET");
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, Snippet.class);
+    }
+    
+    /**
+     * Create a new snippet.  Duplicate snippet names are not allowed.
+     * 
+     * @param name
+     *              The snippet's name
+     * @param body
+     *              The snippet's contents
+     * @return SnippetReceipt object
+     * @throws SendWithUsException
+     */
+    public SnippetReceipt createSnippet(String name, String body) throws SendWithUsException {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("name", name);
+        sendParams.put("body", body);
+
+        String url = getURLEndpoint("snippets");
+
+        String response = makeURLRequest(url, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, SnippetReceipt.class);
+    }
+    
+    /**
+     * Update an existing snippet.  Duplicate snippet names are not allowed.
+     * 
+     * @param snippetId
+     *              The snippet's ID
+     * @param name
+     *              The snippet's new name
+     * @param body
+     *              The snippet's new contents
+     * @return SnippetReceipt object
+     * @throws SendWithUsException
+     */
+    public SnippetReceipt updateSnippet(String snippetId, String name, String body) throws SendWithUsException {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("name", name);
+        sendParams.put("body", body);
+        
+        String resource = String.format("snippets/%s", snippetId);
+        String url = getURLEndpoint(resource);
+
+        String response = makeURLRequest(url, "PUT", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, SnippetReceipt.class);
+    }
+    
+    /**
+     * Delete an existing snippet.
+     * 
+     * @param snippetId
+     *              The snippet's ID
+     * @return APIReceipt object
+     * @throws SendWithUsException
+     */
+    public APIReceipt deleteSnippet(String snippetId) throws SendWithUsException {
+        String resource = String.format("snippets/%s", snippetId);
+        String url = getURLEndpoint(resource);
+
+        String response = makeURLRequest(url, "DELETE");
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, APIReceipt.class);
     }
 
 }
