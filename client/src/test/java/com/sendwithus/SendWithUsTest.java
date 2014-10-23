@@ -12,7 +12,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Mockito;
 
+import com.google.gson.Gson;
 import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.APIReceipt;
 import com.sendwithus.model.APIResponse;
@@ -20,6 +22,8 @@ import com.sendwithus.model.CustomerReceipt;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
+import com.sendwithus.model.Snippet;
+import com.sendwithus.model.SnippetReceipt;
 
 @RunWith(JUnit4.class)
 public class SendWithUsTest
@@ -40,8 +44,7 @@ public class SendWithUsTest
     @BeforeClass
     public static void setUp()
     {
-
-        sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
+        sendwithusAPI = Mockito.spy(new SendWithUs(SENDWITHUS_API_KEY));
 
         defaultRecipientParams.put("name", "Unit Tests - Java");
         defaultRecipientParams.put("address", TEST_RECIPIENT_ADDRESS);
@@ -215,7 +218,7 @@ public class SendWithUsTest
     @Test(expected = SendWithUsException.class)
     public void testSendInvalidAPIKey() throws SendWithUsException
     {
-        SendWithUs invalidAPI = new SendWithUs("INVALID_KEY");
+        SendWithUs invalidAPI = new SendWithUs("SWUTEST_INVALID_KEY");
 
         invalidAPI.send(EMAIL_ID, defaultRecipientParams, defaultDataParams);
     }
@@ -226,7 +229,7 @@ public class SendWithUsTest
     @Test(expected = SendWithUsException.class)
     public void testSendInvalidEmailId() throws SendWithUsException
     {
-        sendwithusAPI.send("INVALID_EMAIL_ID", defaultRecipientParams,
+        sendwithusAPI.send("SWUTEST_INVALID_EMAIL_ID", defaultRecipientParams,
                 defaultDataParams);
     }
 
@@ -281,7 +284,7 @@ public class SendWithUsTest
     @Test(expected = SendWithUsException.class)
     public void testRenderInvalidEmailId() throws SendWithUsException
     {
-        sendwithusAPI.render("INVALID_EMAIL_ID", defaultDataParams);
+        sendwithusAPI.render("SWUTEST_INVALID_EMAIL_ID", defaultDataParams);
     }
 
     /**
@@ -299,5 +302,109 @@ public class SendWithUsTest
 
         assertSuccessfulAPIReceipt(receipt);
     }
+    
+    /**
+     * Test getting all snippets
+     */
+    @Test
+    public void testGetSnippets() throws Exception
+    {
+        Mockito.doReturn(
+                "[{'id': 'test-snippet-id', 'name': 'test-snippet', 'body': '<h1>test header</h1>', 'created': 1414091325}]"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("snippets"), Mockito.eq("GET")
+        );
+        
+        Snippet[] snippets = sendwithusAPI.getSnippets();
 
+        assertNotNull(snippets);
+        assertTrue(snippets.length > 0);
+        assertNotNull(snippets[0]);
+        assertEquals("test-snippet", snippets[0].getName());
+    }
+    
+    /**
+     * Test get specific snippet
+     */
+    @Test
+    public void testGetSnippet() throws Exception
+    {
+        String snippetId = "test-snippet-id";
+        
+        Mockito.doReturn(
+                "{'id': 'test-snippet-id', 'name': 'test-snippet', 'body': '<h1>test header</h1>', 'created': 1414091325}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("snippets/"+snippetId), Mockito.eq("GET")
+        );
+
+        Snippet snippet = sendwithusAPI.getSnippet(snippetId);
+
+        assertNotNull(snippet);
+        assertTrue(snippet instanceof Snippet);
+    }
+    
+    /**
+     * Test creating a new snippet
+     */
+    @Test
+    public void testCreateSnippet() throws Exception
+    {
+        Mockito.doReturn(
+                "{'success': true, 'status': 'OK'}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("snippets"), Mockito.eq("POST"), Mockito.anyMap()
+        );
+        
+        String name = "test-snippet";
+        String body = "<h1>test header</h1>";
+
+        SnippetReceipt receipt = sendwithusAPI.createSnippet(name, body);
+
+        assertSuccessfulAPIReceipt(receipt);
+        assertTrue(receipt instanceof SnippetReceipt);
+    }
+    
+    /**
+     * Test updating a snippet
+     */
+    @Test
+    public void testUpdateSnippet() throws Exception
+    {
+        String snippetId = "test-snippet-id";
+        
+        Mockito.doReturn(
+                "{'success': true, 'status': 'OK'}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("snippets/"+snippetId), Mockito.eq("PUT"), Mockito.anyMap()
+        );
+        
+        String name = "test-snippet";
+        String body = "<h1>test header</h1>";
+
+        SnippetReceipt receipt = sendwithusAPI.updateSnippet(snippetId, name, body);
+
+        assertSuccessfulAPIReceipt(receipt);
+        assertTrue(receipt instanceof SnippetReceipt);
+    }
+    
+    /**
+     * Test deleting a snippet
+     */
+    @Test
+    public void testDeleteSnippet() throws Exception
+    {
+        String snippetId = "test-snippet-id";
+        
+        Mockito.doReturn(
+                "{'success': true, 'status': 'OK'}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("snippets/"+snippetId), Mockito.eq("DELETE")
+        );
+
+        APIReceipt receipt = sendwithusAPI.deleteSnippet(snippetId);
+
+        assertSuccessfulAPIReceipt(receipt);
+        assertTrue(receipt instanceof APIReceipt);
+    }
+    
 }

@@ -6,7 +6,7 @@ package com.sendwithus.model;
  * Unlike APIResponse, provides "success" and "status" properties.
  * 
  */
-public abstract class APIReceipt extends APIResponse {
+public class APIReceipt extends APIResponse {
     
     protected Boolean success; // must match JSON response
     protected String status; // must match JSON response

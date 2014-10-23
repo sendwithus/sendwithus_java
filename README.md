@@ -6,7 +6,7 @@ To use the library in your own project, please follow the installation and usage
 
 **Warning**
 
-This client is a working development repository, please use the `1.3.0` jar or maven repository. _Do not_ build
+This client is a working development repository, please use the `1.4.0` jar or maven repository. _Do not_ build
 the client yourself.
 
 ## Installation
@@ -26,12 +26,12 @@ Add the following to your pom.xml:
 <dependency>
         <groupId>com.sendwithus</groupId>
         <artifactId>java-client</artifactId>
-        <version>1.3.0</version>
+        <version>1.4.0</version>
 </dependency>
 ```
 ### via wget:
 
-    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.3.0/java-client-1.3.0.jar
+    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.4.0/java-client-1.4.0.jar
 
 ### External Dependencies (if not using maven)
  - [gson-2.2.2](http://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
@@ -40,7 +40,7 @@ Add the following to your pom.xml:
 
 ## Usage
 
-### General
+### Sending
 
 See [SendWithUsExample.java](https://github.com/sendwithus/sendwithus_java/blob/master/SendWithUsExample.java) for full usage.
 
@@ -66,6 +66,20 @@ Two APIs now exist for issuing "Send" requests:
   - setAttachmentPaths(String[] attachmentPaths)
   - setEspAccount(String espAccount)
   - setVersionName(String versionName)
+
+### Advanced
+
+ The following methods are also available:
+
+ - templates()
+ - render(String, Map<String, Object>)
+ - deactivateDrips(String)
+ - createUpdateCustomer(String, Map<String, Object>)
+ - getSnippets()
+ - getSnippet(String)
+ - createSnippet(String, String)
+ - updateSnippet(String, String, String)
+ - deleteSnippet(String)
 
 ### Examples
 
