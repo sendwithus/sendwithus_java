@@ -482,7 +482,23 @@ public class SendWithUs
         Gson gson = new Gson();
         return gson.fromJson(response, CustomerReceipt.class);
     }
-    
+
+    public APIReceipt createConversionEvent(String customerEmailAddress, int revenue)
+        throws SendWithUsException
+    {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("revenue", revenue);
+
+        String url = getURLEndpoint("customers");
+        url = String.format("%s/%s/conversions", url, customerEmailAddress);
+
+        String response = makeUrlRequest(url, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, APIReceipt.class);
+    }
+
+
     /**
      * Gets all snippets for your account.
      * 
