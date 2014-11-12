@@ -406,5 +406,39 @@ public class SendWithUsTest
         assertSuccessfulAPIReceipt(receipt);
         assertTrue(receipt instanceof APIReceipt);
     }
-    
+
+
+    /**
+     * Test adding conversion event with revenue
+     */
+    @Test
+    public void testConversionEventWithRevenue() throws Exception
+    {
+        Mockito.doReturn(
+                "{'success': true, 'status': 'OK'}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("conversions"), Mockito.eq("POST")
+        );
+
+        APIReceipt receipt = sendwithusAPI.createConversionEvent("customer@example.com", 2000);
+
+        assertSuccessfulAPIReceipt(receipt);
+    }
+
+    /**
+     * Test adding conversion event sans revenue
+     */
+    @Test
+    public void testConversionEventWithoutRevenue() throws Exception
+    {
+        Mockito.doReturn(
+                "{'success': true, 'status': 'OK'}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("conversions"), Mockito.eq("POST")
+        );
+
+        APIReceipt receipt = sendwithusAPI.createConversionEvent("customer@example.com");
+
+        assertSuccessfulAPIReceipt(receipt);
+    }
 }
