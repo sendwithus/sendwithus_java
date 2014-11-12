@@ -36,7 +36,7 @@ public class SendWithUs
     public static final String API_PORT = "443";
     
     public static final String API_VERSION = "1";
-    public static final String CLIENT_VERSION = "1.4.0";
+    public static final String CLIENT_VERSION = "1.5.0";
     public static final String CLIENT_LANG = "java";
     public static final String SWU_API_HEADER = "X-SWU-API-KEY";
     public static final String SWU_CLIENT_HEADER = "X-SWU-API-CLIENT";
@@ -494,7 +494,7 @@ public class SendWithUs
      * @return Response details
      * @throws SendWithUsException
      */
-    public APIReceipt createConversionEvent(String customerEmailAddress, int revenue)
+    public APIReceipt createConversionEvent(String customerEmailAddress, Integer revenue)
         throws SendWithUsException
     {
         Map<String, Object> sendParams = new HashMap<String, Object>();
