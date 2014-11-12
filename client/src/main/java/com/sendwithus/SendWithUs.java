@@ -483,6 +483,17 @@ public class SendWithUs
         return gson.fromJson(response, CustomerReceipt.class);
     }
 
+
+    /**
+     * This will add a new conversion with revenue to a specific customer in your sendwithus account.
+     *
+     * @param customerEmailAddress
+     *            The customer's Email address
+     * @param revenue
+     *            Amount of revenue associated with customer event (Note: in cents, $10.00 = 1000)
+     * @return Response details
+     * @throws SendWithUsException
+     */
     public APIReceipt createConversionEvent(String customerEmailAddress, int revenue)
         throws SendWithUsException
     {
@@ -492,7 +503,29 @@ public class SendWithUs
         String url = getURLEndpoint("customers");
         url = String.format("%s/%s/conversions", url, customerEmailAddress);
 
-        String response = makeUrlRequest(url, "POST", sendParams);
+        String response = makeURLRequest(url, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, APIReceipt.class);
+    }
+
+    /**
+     * This will add a new conversion without revenue to a specific customer in your sendwithus account.
+     *
+     * @param customerEmailAddress
+     *            The customer's Email address
+     * @return Response details
+     * @throws SendWithUsException
+     */
+    public APIReceipt createConversionEvent(String customerEmailAddress)
+            throws SendWithUsException
+    {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+
+        String url = getURLEndpoint("customers");
+        url = String.format("%s/%s/conversions", url, customerEmailAddress);
+
+        String response = makeURLRequest(url, "POST", sendParams);
 
         Gson gson = new Gson();
         return gson.fromJson(response, APIReceipt.class);
