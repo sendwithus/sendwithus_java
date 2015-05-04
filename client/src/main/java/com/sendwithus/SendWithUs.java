@@ -1,11 +1,5 @@
 package com.sendwithus;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.sendwithus.exception.SendWithUsException;
-import com.sendwithus.model.*;
-
-import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,6 +8,22 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.sendwithus.exception.SendWithUsException;
+import com.sendwithus.model.APIReceipt;
+import com.sendwithus.model.ActivatedDrip;
+import com.sendwithus.model.CustomerReceipt;
+import com.sendwithus.model.DeactivatedDrip;
+import com.sendwithus.model.DeactivatedDripsAll;
+import com.sendwithus.model.Email;
+import com.sendwithus.model.RenderedTemplate;
+import com.sendwithus.model.SendReceipt;
+import com.sendwithus.model.Snippet;
+import com.sendwithus.model.SnippetReceipt;
 
 /**
  * SendWithUs API interface.
@@ -28,7 +38,7 @@ public class SendWithUs
     public static final String API_PORT = "443";
     
     public static final String API_VERSION = "1";
-    public static final String CLIENT_VERSION = "1.5.0";
+    public static final String CLIENT_VERSION = "1.6.0";
     public static final String CLIENT_LANG = "java";
     public static final String SWU_API_HEADER = "X-SWU-API-KEY";
     public static final String SWU_CLIENT_HEADER = "X-SWU-API-CLIENT";
@@ -485,7 +495,7 @@ public class SendWithUs
      * @return Response details
      * @throws SendWithUsException
      */
-    public DeactivatedDrips deactivateDrips(String customerEmailAddress)
+    public DeactivatedDripsAll deactivateDrips(String customerEmailAddress)
             throws SendWithUsException
     {
         Map<String, Object> sendParams = new HashMap<String, Object>();
@@ -496,7 +506,7 @@ public class SendWithUs
         String response = makeURLRequest(url, "POST", sendParams);
 
         Gson gson = new Gson();
-        return gson.fromJson(response, DeactivatedDrips.class);
+        return gson.fromJson(response, DeactivatedDripsAll.class);
     }
 
     /**
