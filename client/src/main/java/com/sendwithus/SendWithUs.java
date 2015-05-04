@@ -1,5 +1,11 @@
 package com.sendwithus;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.sendwithus.exception.SendWithUsException;
+import com.sendwithus.model.*;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,20 +14,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import javax.net.ssl.HttpsURLConnection;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.sendwithus.exception.SendWithUsException;
-import com.sendwithus.model.APIReceipt;
-import com.sendwithus.model.CustomerReceipt;
-import com.sendwithus.model.DeactivatedDrips;
-import com.sendwithus.model.Email;
-import com.sendwithus.model.RenderedTemplate;
-import com.sendwithus.model.SendReceipt;
-import com.sendwithus.model.Snippet;
-import com.sendwithus.model.SnippetReceipt;
 
 /**
  * SendWithUs API interface.
@@ -436,6 +428,56 @@ public class SendWithUs
     }
 
     /**
+     * Activates a drip campaign for a specific email.
+     *
+     * @param dripCampaignId
+     *            The id of the drip campaign
+     * @param dripRequest
+     *            The "drip activate" request parameters
+     * @return Response details
+     * @throws SendWithUsException
+     */
+    public ActivatedDrip startOnDripCampaign(String dripCampaignId, SendWithUsDripRequest dripRequest)
+            throws SendWithUsException
+    {
+        Map<String, Object> sendParams = dripRequest.asMap();
+
+        String url = getURLEndpoint("drip_campaigns");
+        url = String.format("%s/%s/activate", url, dripCampaignId);
+
+        String response = makeURLRequest(url, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, ActivatedDrip.class);
+    }
+
+    /**
+     * Deactivate a drip campaign for a customer.
+     *
+     * @param customerEmailAddress
+     *            The customer's Email address
+     * @param dripCampaignId
+     *            The id of the drip campaign
+     * @return Response details
+     * @throws SendWithUsException
+     */
+    public DeactivatedDrip removeFromDripCampaign(String customerEmailAddress, String dripCampaignId )
+            throws SendWithUsException
+    {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("recipient_address", customerEmailAddress);
+
+        String url = getURLEndpoint("drip_campaigns");
+        url = String.format("%s/%s/deactivate", url, dripCampaignId);
+
+        String response = makeURLRequest(url, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, DeactivatedDrip.class);
+    }
+
+
+    /**
      * Deactivate drip campaigns for a customer.
      * 
      * @param customerEmailAddress
@@ -449,7 +491,7 @@ public class SendWithUs
         Map<String, Object> sendParams = new HashMap<String, Object>();
         sendParams.put("email_address", customerEmailAddress);
 
-        String url = getURLEndpoint("drips/deactivate");
+        String url = getURLEndpoint("drip_campaigns/deactivate");
 
         String response = makeURLRequest(url, "POST", sendParams);
 
