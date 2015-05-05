@@ -22,7 +22,6 @@ import com.sendwithus.model.DeactivatedDrips;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
-import com.sendwithus.model.SendReceipt.EmailSendDetails;
 import com.sendwithus.model.Snippet;
 import com.sendwithus.model.SnippetReceipt;
 
@@ -108,6 +107,8 @@ public class SendWithUsTest
                 defaultRecipientParams, defaultDataParams);
 
         assertSuccessfulAPIReceipt(sendReceipt);
+        assertNotNull(sendReceipt.getEmail());
+        assertEquals(sendReceipt.getEmail().getLocale(), "en-US");
     }
 
     /**
