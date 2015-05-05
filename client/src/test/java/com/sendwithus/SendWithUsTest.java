@@ -14,14 +14,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
 
-import com.google.gson.Gson;
 import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.APIReceipt;
 import com.sendwithus.model.APIResponse;
 import com.sendwithus.model.CustomerReceipt;
+import com.sendwithus.model.DeactivatedDripsAll;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
+import com.sendwithus.model.SendReceipt.EmailSendDetails;
 import com.sendwithus.model.Snippet;
 import com.sendwithus.model.SnippetReceipt;
 
@@ -105,6 +106,10 @@ public class SendWithUsTest
     {
         SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
                 defaultRecipientParams, defaultDataParams);
+        
+        System.out.println(sendReceipt.getEmail().getName());
+        System.out.println(sendReceipt.getEmail().getVersionName());
+        System.out.println(sendReceipt.getEmail().getLocale());
 
         assertSuccessfulAPIReceipt(sendReceipt);
     }
@@ -441,4 +446,15 @@ public class SendWithUsTest
 
         assertSuccessfulAPIReceipt(receipt);
     }
+    
+    /**
+     * Test deactivate all drips for a customer
+     */
+    @Test
+    public void tests() throws Exception
+    {
+        DeactivatedDripsAll receipt = sendwithusAPI.deactivateDrips(TEST_RECIPIENT_ADDRESS);
+        assertSuccessfulAPIResponse(receipt);
+    }
+   
 }
