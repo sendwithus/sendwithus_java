@@ -8,11 +8,11 @@ public class DeactivatedDrip extends APIReceipt {
     private String recipient_address; // must match JSON response
     private String message; // must match JSON response
 
-    public DripCampaign getDrip_campaign() {
+    public DripCampaign getDripCampaign() {
         return drip_campaign;
     }
 
-    public String getRecipient_address() {
+    public String getRecipientAddress() {
         return recipient_address;
     }
 
@@ -21,6 +21,6 @@ public class DeactivatedDrip extends APIReceipt {
     }
 
     public String toString() {
-        return String.format("DeactivatedDrip[%s]", getRecipient_address());
+        return String.format("DeactivatedDrip[%s]", getRecipientAddress());
     }
 }
