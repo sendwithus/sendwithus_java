@@ -1,7 +1,7 @@
 package com.sendwithus.model;
 
 
-public class DeactivatedDripsAll extends APIReceipt {
+public class DeactivatedDrips extends APIReceipt {
 
     private String recipient_address; // must match JSON response
 

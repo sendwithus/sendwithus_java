@@ -18,7 +18,7 @@ import com.sendwithus.exception.SendWithUsException;
 import com.sendwithus.model.APIReceipt;
 import com.sendwithus.model.APIResponse;
 import com.sendwithus.model.CustomerReceipt;
-import com.sendwithus.model.DeactivatedDripsAll;
+import com.sendwithus.model.DeactivatedDrips;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
@@ -106,10 +106,6 @@ public class SendWithUsTest
     {
         SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
                 defaultRecipientParams, defaultDataParams);
-        
-        System.out.println(sendReceipt.getEmail().getName());
-        System.out.println(sendReceipt.getEmail().getVersionName());
-        System.out.println(sendReceipt.getEmail().getLocale());
 
         assertSuccessfulAPIReceipt(sendReceipt);
     }
@@ -451,9 +447,9 @@ public class SendWithUsTest
      * Test deactivate all drips for a customer
      */
     @Test
-    public void tests() throws Exception
+    public void testDeactivateAllDrips() throws Exception
     {
-        DeactivatedDripsAll receipt = sendwithusAPI.deactivateDrips(TEST_RECIPIENT_ADDRESS);
+        DeactivatedDrips receipt = sendwithusAPI.deactivateDrips(TEST_RECIPIENT_ADDRESS);
         assertSuccessfulAPIResponse(receipt);
     }
    

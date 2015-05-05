@@ -18,7 +18,7 @@ import com.sendwithus.model.APIReceipt;
 import com.sendwithus.model.ActivatedDrip;
 import com.sendwithus.model.CustomerReceipt;
 import com.sendwithus.model.DeactivatedDrip;
-import com.sendwithus.model.DeactivatedDripsAll;
+import com.sendwithus.model.DeactivatedDrips;
 import com.sendwithus.model.Email;
 import com.sendwithus.model.RenderedTemplate;
 import com.sendwithus.model.SendReceipt;
@@ -495,7 +495,7 @@ public class SendWithUs
      * @return Response details
      * @throws SendWithUsException
      */
-    public DeactivatedDripsAll deactivateDrips(String customerEmailAddress)
+    public DeactivatedDrips deactivateDrips(String customerEmailAddress)
             throws SendWithUsException
     {
         Map<String, Object> sendParams = new HashMap<String, Object>();
@@ -506,7 +506,7 @@ public class SendWithUs
         String response = makeURLRequest(url, "POST", sendParams);
 
         Gson gson = new Gson();
-        return gson.fromJson(response, DeactivatedDripsAll.class);
+        return gson.fromJson(response, DeactivatedDrips.class);
     }
 
     /**
