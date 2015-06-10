@@ -192,7 +192,7 @@ public class SendWithUsTest
     @Test
     public void testSendWithLocale() throws SendWithUsException
     {
-        String locale = "";
+        String locale = "en-US";
 
         SendWithUsSendRequest request = new SendWithUsSendRequest()
                 .setEmailId(EMAIL_ID).setRecipient(defaultRecipientParams)
