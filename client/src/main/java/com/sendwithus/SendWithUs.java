@@ -392,6 +392,46 @@ public class SendWithUs
     }
 
     /**
+     * Sends an Email. Includes ESP account as a parameter.
+     *
+     * @param emailId
+     *            The Email template's ID
+     * @param recipient
+     *            Map defining the Recipient
+     * @param sender
+     *            Map defining the Sender
+     * @param emailData
+     *            Map defining the Email's variable substitutions
+     * @param cc
+     *            Array of maps defining CC recipients
+     * @param bcc
+     *            Array of maps defining BCC recipients
+     * @param attachment_paths
+     *            Array of filepaths for attachments
+     * @param espAccount
+     *            ID specifying the ESP account to use
+     * @param locale
+     *            Template locale to send
+     * @return The receipt ID
+     * @throws SendWithUsException
+     */
+    public SendReceipt send(String emailId, Map<String, Object> recipient,
+                            Map<String, Object> sender, Map<String, Object> emailData,
+                            Map<String, Object>[] cc, Map<String, Object>[] bcc,
+                            String[] attachment_paths, String espAccount,
+                            String locale)
+            throws SendWithUsException
+    {
+        SendWithUsSendRequest request = new SendWithUsSendRequest();
+        request.setEmailId(emailId).setRecipient(recipient)
+                .setEmailData(emailData).setSender(sender).setCcRecipients(cc)
+                .setBccRecipients(bcc).setAttachmentPaths(attachment_paths)
+                .setEspAccount(espAccount).setLocale(locale);
+
+        return this.send(request);
+    }
+
+    /**
      * Sends an Email defined by a request object.
      * 
      * @param request
