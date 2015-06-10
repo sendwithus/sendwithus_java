@@ -187,6 +187,24 @@ public class SendWithUsTest
     }
 
     /**
+     * Test send with empty esp account
+     */
+    @Test
+    public void testSendWithLocale() throws SendWithUsException
+    {
+        String locale = "en-US";
+
+        SendWithUsSendRequest request = new SendWithUsSendRequest()
+                .setEmailId(EMAIL_ID).setRecipient(defaultRecipientParams)
+                .setSender(defaultSenderParams).setEmailData(defaultDataParams)
+                .setLocale(locale);
+
+        SendReceipt sendReceipt = sendwithusAPI.send(request);
+
+        assertSuccessfulAPIReceipt(sendReceipt);
+    }
+
+    /**
      * Test send with default request object
      */
     @Test

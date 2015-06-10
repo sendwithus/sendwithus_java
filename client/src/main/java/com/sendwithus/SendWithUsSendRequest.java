@@ -29,6 +29,7 @@ public class SendWithUsSendRequest
     private String[] attachmentPaths = null;
     private String espAccount = null;
     private String versionName = null;
+    private String locale = null;
 
     public SendWithUsSendRequest()
     {
@@ -111,6 +112,11 @@ public class SendWithUsSendRequest
             sendParams.put("version_name", versionName);
         }
 
+        if (locale != null)
+        {
+            sendParams.put("locale", locale);
+        }
+
         return sendParams;
     }
 
@@ -182,4 +188,9 @@ public class SendWithUsSendRequest
         return this;
     }
 
+    public SendWithUsSendRequest setLocale(String locale)
+    {
+        this.locale = locale;
+        return this;
+    }
 }

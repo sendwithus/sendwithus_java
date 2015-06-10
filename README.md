@@ -26,7 +26,7 @@ Add the following to your pom.xml:
 <dependency>
         <groupId>com.sendwithus</groupId>
         <artifactId>java-client</artifactId>
-        <version>1.6.0</version>
+        <version>1.7.0</version>
 </dependency>
 ```
 ### via wget:
@@ -66,6 +66,7 @@ Two APIs now exist for issuing "Send" requests:
   - setAttachmentPaths(String[] attachmentPaths)
   - setEspAccount(String espAccount)
   - setVersionName(String versionName)
+  - setLocale(String locale)
 
 ### Advanced
 
