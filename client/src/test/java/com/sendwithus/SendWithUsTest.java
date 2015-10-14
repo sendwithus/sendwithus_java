@@ -187,7 +187,7 @@ public class SendWithUsTest
     }
 
     /**
-     * Test send with empty esp account
+     * Test send with non-empty locale
      */
     @Test
     public void testSendWithLocale() throws SendWithUsException
@@ -198,6 +198,25 @@ public class SendWithUsTest
                 .setEmailId(EMAIL_ID).setRecipient(defaultRecipientParams)
                 .setSender(defaultSenderParams).setEmailData(defaultDataParams)
                 .setLocale(locale);
+
+        SendReceipt sendReceipt = sendwithusAPI.send(request);
+
+        assertSuccessfulAPIReceipt(sendReceipt);
+    }
+
+    /**
+     * Test send with headers
+     */
+    @Test
+    public void testSendWithHeaders() throws SendWithUsException
+    {
+        Map<String, Object> headers = new HashMap<String, Object>();
+        headers.put("X-Auto-Response-Suppress", "header-value")
+
+        SendWithUsSendRequest request = new SendWithUsSendRequest()
+                .setEmailId(EMAIL_ID).setRecipient(defaultRecipientParams)
+                .setSender(defaultSenderParams).setEmailData(defaultDataParams)
+                .setHeaders(headers);
 
         SendReceipt sendReceipt = sendwithusAPI.send(request);
 
