@@ -30,6 +30,7 @@ public class SendWithUsSendRequest
     private String espAccount = null;
     private String versionName = null;
     private String locale = null;
+    private Map<String, String> headers = null;
 
     public SendWithUsSendRequest()
     {
@@ -191,6 +192,12 @@ public class SendWithUsSendRequest
     public SendWithUsSendRequest setLocale(String locale)
     {
         this.locale = locale;
+        return this;
+    }
+
+    public SendWithUsSendRequest setHeaders(Map<String, String> headers)
+    {
+        this.headers = headers;
         return this;
     }
 }
