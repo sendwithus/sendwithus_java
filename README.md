@@ -44,6 +44,10 @@ Add the following to your pom.xml:
 
 See [SendWithUsExample.java](https://github.com/sendwithus/sendwithus_java/blob/master/SendWithUsExample.java) for full usage.
 
+*NOTE* - If a customer does not exist by the specified email (recipient address), the send call will create a customer.
+
+*NOTE* - Email ID is the ID of the Template (template id)
+
 Two APIs now exist for issuing "Send" requests:
  - Legacy:  SendWithUs.send(...) methods
 
