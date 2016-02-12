@@ -19,7 +19,7 @@ public class SendWithUsExample {
 
         // Print list of available emails
         try {
-            Email[] emails = sendwithusAPI.emails();
+            Email[] emails = sendwithusAPI.templates();
             for (int i = 0; i < emails.length; i++) {
                 System.out.println(emails[i].toString());
             }
