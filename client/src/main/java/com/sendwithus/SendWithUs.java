@@ -14,16 +14,7 @@ import javax.net.ssl.HttpsURLConnection;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sendwithus.exception.SendWithUsException;
-import com.sendwithus.model.APIReceipt;
-import com.sendwithus.model.ActivatedDrip;
-import com.sendwithus.model.CustomerReceipt;
-import com.sendwithus.model.DeactivatedDrip;
-import com.sendwithus.model.DeactivatedDrips;
-import com.sendwithus.model.Email;
-import com.sendwithus.model.RenderedTemplate;
-import com.sendwithus.model.SendReceipt;
-import com.sendwithus.model.Snippet;
-import com.sendwithus.model.SnippetReceipt;
+import com.sendwithus.model.*;
 
 /**
  * SendWithUs API interface.
@@ -234,6 +225,34 @@ public class SendWithUs
 
         Gson gson = new Gson();
         return gson.fromJson(response, Email[].class);
+    }
+
+    /**
+     * Fetch a single template
+     *
+     * @param templateId the id of the template to be fetched
+     * @return Email template id and name
+     *
+     * @throws SendWithUsException
+     */
+    public Email template(String templateId) throws SendWithUsException
+    {
+        String url = getURLEndpoint("templates/" + templateId);
+
+        String response = makeURLRequest(url, "GET");
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, Email.class);
+    }
+
+    public TemplateVersion templateVersion(String templateId, String versionId) throws SendWithUsException
+    {
+        String url = getURLEndpoint("templates/" + templateId + "/versions/" + versionId);
+
+        String response = makeURLRequest(url, "GET");
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, TemplateVersion.class);
     }
 
     /**
