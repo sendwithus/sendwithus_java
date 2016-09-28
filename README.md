@@ -78,6 +78,8 @@ Two APIs now exist for issuing "Send" requests:
  The following methods are also available:
 
  - templates()
+ - template(String)
+ - versions(String, String)
  - render(String, Map<String, Object>)
  - deactivateDrips(String)
  - createUpdateCustomer(String, Map<String, Object>)
@@ -97,6 +99,7 @@ import com.sendwithus.SendWithUs;
 
 final String SENDWITHUS_API_KEY = "API-KEY-HERE";
 final String EMAIL_ID_WELCOME_EMAIL = "EMAIL-ID-HERE";
+final String TEMPLATE_ID = "template-id";
 
 SendWithUs sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
 
@@ -141,6 +144,12 @@ SendWithUsSendRequest request = new SendWithUsSendRequest()
     .setAttachmentPaths(attachments)
     .setEspAccount(espAccount);
 SendReceipt sendReceipt = sendwithusAPI.send(request);
+
+Email template = sendwithusAPI.template(TEMPLATE_ID);
+List<TemplateVersion> versions = template.getVersions();
+TemplateVersion version = version
+
+// Example 
 ```
 
 

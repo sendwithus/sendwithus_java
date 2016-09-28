@@ -237,7 +237,25 @@ public class SendWithUs
      */
     public Email template(String templateId) throws SendWithUsException
     {
+        return template(templateId, null);
+    }
+
+    /**
+     * Fetch a single template
+     *
+     * @param templateId the id of the template to be fetched
+     * @param locale the locale of the template
+     * @return Email template id and name
+     *
+     * @throws SendWithUsException
+     */
+    public Email template(String templateId, String locale) throws SendWithUsException
+    {
         String url = getURLEndpoint("templates/" + templateId);
+
+        if (locale != null && !locale.isEmpty()) {
+            url += "/locales/" + locale;
+        }
 
         String response = makeURLRequest(url, "GET");
 
@@ -245,14 +263,44 @@ public class SendWithUs
         return gson.fromJson(response, Email.class);
     }
 
-    public TemplateVersion templateVersion(String templateId, String versionId) throws SendWithUsException
+    /**
+     * Fetch a template version
+     *
+     * @param templateId the id of the template to be fetched
+     * @param versionId the template version id to be fetched
+     * @return TemplateVersionDetails the template version details
+     * @throws SendWithUsException
+     */
+    public TemplateVersionDetails templateVersion(String templateId, String versionId) throws SendWithUsException
     {
-        String url = getURLEndpoint("templates/" + templateId + "/versions/" + versionId);
+        return templateVersion(templateId, versionId, null);
+    }
+
+    /**
+     * Fetch a template version with a specific locale
+     *
+     * @param templateId the id of the template to be fetched
+     * @param versionId the template version id to be fetched
+     * @param locale the locale of the version
+     * @return TemplateVersionDetails the template version details
+     * @throws SendWithUsException
+     */
+    public TemplateVersionDetails templateVersion(String templateId, String versionId, String locale) throws SendWithUsException
+    {
+        String path = "templates/" + templateId;
+
+        if (locale != null && !locale.isEmpty()) {
+            path += "/locales/" + locale;
+        }
+
+        path += "/versions/" + versionId;
+
+        String url = getURLEndpoint(path);
 
         String response = makeURLRequest(url, "GET");
 
         Gson gson = new Gson();
-        return gson.fromJson(response, TemplateVersion.class);
+        return gson.fromJson(response, TemplateVersionDetails.class);
     }
 
     /**
