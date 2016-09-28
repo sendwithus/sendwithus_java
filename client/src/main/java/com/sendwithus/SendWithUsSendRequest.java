@@ -85,9 +85,10 @@ public class SendWithUsSendRequest
 
                     files.add(file_map);
 
-                } catch (IOException e)
+                }
+                catch (IOException e)
                 {
-                    throw new SendWithUsException("Caught IOException");
+                    throw new SendWithUsException("Caught IOException", e);
                 }
             }
             sendParams.put("files", files);

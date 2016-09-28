@@ -4,7 +4,7 @@
     <groupId>com.sendwithus</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.9.0</version>
+    <version>1.10.0</version>
     <name>sendwithus-java-parent</name>
     <url>https://github.com/sendwithus/sendwithus_java</url>
     <description>SendWithUs Java Artifact Parent Project</description>
@@ -17,6 +17,10 @@
         <artifactId>oss-parent</artifactId>
         <version>7</version>
     </parent>
+
+    <properties>
+        <java.version>1.6</java.version>
+    </properties>
     <scm>
         <connection>scm:git:git@github.com:sendwithus/sendwithus_java.git</connection>
         <developerConnection>scm:git:git@github.com:sendwithus/sendwithus_java.git</developerConnection>

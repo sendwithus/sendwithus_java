@@ -14,16 +14,7 @@ import javax.net.ssl.HttpsURLConnection;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sendwithus.exception.SendWithUsException;
-import com.sendwithus.model.APIReceipt;
-import com.sendwithus.model.ActivatedDrip;
-import com.sendwithus.model.CustomerReceipt;
-import com.sendwithus.model.DeactivatedDrip;
-import com.sendwithus.model.DeactivatedDrips;
-import com.sendwithus.model.Email;
-import com.sendwithus.model.RenderedTemplate;
-import com.sendwithus.model.SendReceipt;
-import com.sendwithus.model.Snippet;
-import com.sendwithus.model.SnippetReceipt;
+import com.sendwithus.model.*;
 
 /**
  * SendWithUs API interface.
@@ -38,7 +29,7 @@ public class SendWithUs
     public static final String API_PORT = "443";
     
     public static final String API_VERSION = "1";
-    public static final String CLIENT_VERSION = "1.9.0";
+    public static final String CLIENT_VERSION = "1.10.0";
     public static final String CLIENT_LANG = "java";
     public static final String SWU_API_HEADER = "X-SWU-API-KEY";
     public static final String SWU_CLIENT_HEADER = "X-SWU-API-CLIENT";
@@ -234,6 +225,82 @@ public class SendWithUs
 
         Gson gson = new Gson();
         return gson.fromJson(response, Email[].class);
+    }
+
+    /**
+     * Fetch a single template
+     *
+     * @param templateId the id of the template to be fetched
+     * @return Email template id and name
+     *
+     * @throws SendWithUsException
+     */
+    public Email template(String templateId) throws SendWithUsException
+    {
+        return template(templateId, null);
+    }
+
+    /**
+     * Fetch a single template
+     *
+     * @param templateId the id of the template to be fetched
+     * @param locale the locale of the template
+     * @return Email template id and name
+     *
+     * @throws SendWithUsException
+     */
+    public Email template(String templateId, String locale) throws SendWithUsException
+    {
+        String url = getURLEndpoint("templates/" + templateId);
+
+        if (locale != null && !locale.isEmpty()) {
+            url += "/locales/" + locale;
+        }
+
+        String response = makeURLRequest(url, "GET");
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, Email.class);
+    }
+
+    /**
+     * Fetch a template version
+     *
+     * @param templateId the id of the template to be fetched
+     * @param versionId the template version id to be fetched
+     * @return TemplateVersionDetails the template version details
+     * @throws SendWithUsException
+     */
+    public TemplateVersionDetails templateVersion(String templateId, String versionId) throws SendWithUsException
+    {
+        return templateVersion(templateId, versionId, null);
+    }
+
+    /**
+     * Fetch a template version with a specific locale
+     *
+     * @param templateId the id of the template to be fetched
+     * @param versionId the template version id to be fetched
+     * @param locale the locale of the version
+     * @return TemplateVersionDetails the template version details
+     * @throws SendWithUsException
+     */
+    public TemplateVersionDetails templateVersion(String templateId, String versionId, String locale) throws SendWithUsException
+    {
+        String path = "templates/" + templateId;
+
+        if (locale != null && !locale.isEmpty()) {
+            path += "/locales/" + locale;
+        }
+
+        path += "/versions/" + versionId;
+
+        String url = getURLEndpoint(path);
+
+        String response = makeURLRequest(url, "GET");
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, TemplateVersionDetails.class);
     }
 
     /**

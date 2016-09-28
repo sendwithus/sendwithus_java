@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sendwithus.model.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,15 +16,6 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
 
 import com.sendwithus.exception.SendWithUsException;
-import com.sendwithus.model.APIReceipt;
-import com.sendwithus.model.APIResponse;
-import com.sendwithus.model.CustomerReceipt;
-import com.sendwithus.model.DeactivatedDrips;
-import com.sendwithus.model.Email;
-import com.sendwithus.model.RenderedTemplate;
-import com.sendwithus.model.SendReceipt;
-import com.sendwithus.model.Snippet;
-import com.sendwithus.model.SnippetReceipt;
 
 @RunWith(JUnit4.class)
 public class SendWithUsTest
@@ -31,6 +23,8 @@ public class SendWithUsTest
 
     public static final String SENDWITHUS_API_KEY = "THIS_IS_A_TEST_API_KEY";
     public static final String EMAIL_ID = "test_fixture_1";
+    public static final String TEMPLATE_ID = "test_template_1";
+    public static final String VERSION_ID = "test_version_1";
 
     static SendWithUs sendwithusAPI;
 
@@ -89,12 +83,104 @@ public class SendWithUsTest
     @Test
     public void testGetTemplates() throws SendWithUsException
     {
+        Mockito.doReturn(
+                "[{'id': 'test-snippet-id', 'name': 'test-snippet', 'body': '<h1>test header</h1>', 'created': 1414091325}]"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("templates"), Mockito.eq("GET")
+        );
+
         Email[] emails = sendwithusAPI.templates();
 
         assertTrue(emails.length > 0);
         for (Email emailReceipt : emails) {
             assertSuccessfulAPIResponse(emailReceipt);
         }
+    }
+
+    /**
+     * Test get template
+     */
+    @Test
+    public void testGetTemplate() throws SendWithUsException
+    {
+        Mockito.doReturn(
+                "{'id': '" + TEMPLATE_ID + "', 'name': 'test-template'," +
+                        "    'created': 1411606421," +
+                        "    'locale': 'en-US'," +
+                        "    'versions': [" +
+                        "        {" +
+                        "            'name': 'Version Name'," +
+                        "            'id': 'ver_arstneiotsra'," +
+                        "            'created': '1411606421'," +
+                        "            'modified': '1411606421'" +
+                        "        }" +
+                        "    ]," +
+                        "    'tags': ['tag1', 'tag2']}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("templates/" + TEMPLATE_ID), Mockito.eq("GET")
+        );
+        Email email = sendwithusAPI.template(TEMPLATE_ID);
+        assertSuccessfulAPIResponse(email);
+        assertEquals("test-template", email.getName());
+    }
+
+    /**
+     * Test get template with locale
+     */
+    @Test
+    public void testGetTemplateWithLocale() throws SendWithUsException
+    {
+        Mockito.doReturn(
+                "{'id': '" + TEMPLATE_ID + "', 'name': 'test-template'," +
+                        "    'created': 1411606421," +
+                        "    'locale': 'en-CA'," +
+                        "    'versions': [" +
+                        "        {" +
+                        "            'name': 'Version Name'," +
+                        "            'id': 'ver_arstneiotsra'," +
+                        "            'created': '1411606421'," +
+                        "            'modified': '1411606421'" +
+                        "        }" +
+                        "    ]," +
+                        "    'tags': ['tag1', 'tag2']}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("templates/" + TEMPLATE_ID + "/locales/en-CA"), Mockito.eq("GET")
+        );
+        Email email = sendwithusAPI.template(TEMPLATE_ID, "en-CA");
+        assertSuccessfulAPIResponse(email);
+        assertEquals("test-template", email.getName());
+    }
+
+    /**
+     * Test get template version
+     */
+    @Test
+    public void testGetTemplateVersion() throws SendWithUsException
+    {
+        Mockito.doReturn(
+                "{'id': 'test-templateVersion-id', 'name': 'test-version', 'html': '<h1>test header</h1>', 'created': 1414091325}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("templates/" + TEMPLATE_ID + "/versions/" + VERSION_ID), Mockito.eq("GET")
+        );
+        TemplateVersionDetails version = sendwithusAPI.templateVersion(TEMPLATE_ID, VERSION_ID);
+        assertSuccessfulAPIResponse(version);
+        assertEquals("<h1>test header</h1>", version.getHtml());
+    }
+
+    /**
+     * Test get template version
+     */
+    @Test
+    public void testGetTemplateVersionWithLocale() throws SendWithUsException
+    {
+        Mockito.doReturn(
+                "{'id': 'test-templateVersion-id', 'name': 'test-version', 'html': '<h1>test header</h1>', 'created': 1414091325}"
+        ).when(sendwithusAPI).makeURLRequest(
+                Mockito.endsWith("templates/" + TEMPLATE_ID + "/locales/en-CA/versions/" + VERSION_ID), Mockito.eq("GET")
+        );
+        TemplateVersionDetails version = sendwithusAPI.templateVersion(TEMPLATE_ID, VERSION_ID, "en-CA");
+        assertSuccessfulAPIResponse(version);
+        assertEquals("<h1>test header</h1>", version.getHtml());
     }
 
     /**

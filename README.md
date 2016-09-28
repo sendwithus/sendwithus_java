@@ -26,15 +26,15 @@ Add the following to your pom.xml:
 <dependency>
         <groupId>com.sendwithus</groupId>
         <artifactId>java-client</artifactId>
-        <version>1.9.0</version>
+        <version>1.10.0</version>
 </dependency>
 ```
 ### via wget:
 
-    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.6.0/java-client-1.6.0.jar
+    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.10.0/java-client-1.10.0.jar
 
 ### External Dependencies (if not using maven)
- - [gson-2.2.2](http://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
+ - [gson-2.2.2](https://github.com/google/gson)
  - [commons-io-2.4](http://commons.apache.org/proper/commons-io/)
  - [commons-codec](http://commons.apache.org/proper/commons-codec/)
 
@@ -78,6 +78,8 @@ Two APIs now exist for issuing "Send" requests:
  The following methods are also available:
 
  - templates()
+ - template(String)
+ - versions(String, String)
  - render(String, Map<String, Object>)
  - deactivateDrips(String)
  - createUpdateCustomer(String, Map<String, Object>)
@@ -97,6 +99,7 @@ import com.sendwithus.SendWithUs;
 
 final String SENDWITHUS_API_KEY = "API-KEY-HERE";
 final String EMAIL_ID_WELCOME_EMAIL = "EMAIL-ID-HERE";
+final String TEMPLATE_ID = "template-id";
 
 SendWithUs sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
 
@@ -141,6 +144,13 @@ SendWithUsSendRequest request = new SendWithUsSendRequest()
     .setAttachmentPaths(attachments)
     .setEspAccount(espAccount);
 SendReceipt sendReceipt = sendwithusAPI.send(request);
+
+Email template = sendwithusAPI.template(TEMPLATE_ID);
+List<TemplateVersion> versions = template.getVersions();
+TemplateVersion version = version.get(0);
+TemplateVersionDetails details = sendwithusAPI.version(TEMPLATE_ID, version.getId());
+
+// Example 
 ```
 
 
