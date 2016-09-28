@@ -17,6 +17,10 @@
         <artifactId>oss-parent</artifactId>
         <version>7</version>
     </parent>
+
+    <properties>
+        <java.version>1.6</java.version>
+    </properties>
     <scm>
         <connection>scm:git:git@github.com:sendwithus/sendwithus_java.git</connection>
         <developerConnection>scm:git:git@github.com:sendwithus/sendwithus_java.git</developerConnection>
