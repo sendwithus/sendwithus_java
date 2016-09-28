@@ -26,15 +26,15 @@ Add the following to your pom.xml:
 <dependency>
         <groupId>com.sendwithus</groupId>
         <artifactId>java-client</artifactId>
-        <version>1.9.0</version>
+        <version>1.10.0</version>
 </dependency>
 ```
 ### via wget:
 
-    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.6.0/java-client-1.6.0.jar
+    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/1.10.0/java-client-1.10.0.jar
 
 ### External Dependencies (if not using maven)
- - [gson-2.2.2](http://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
+ - [gson-2.2.2](https://github.com/google/gson)
  - [commons-io-2.4](http://commons.apache.org/proper/commons-io/)
  - [commons-codec](http://commons.apache.org/proper/commons-codec/)
 

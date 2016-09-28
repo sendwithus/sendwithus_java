@@ -111,8 +111,8 @@ public class SendWithUsTest
                         "        {" +
                         "            'name': 'Version Name'," +
                         "            'id': 'ver_arstneiotsra'," +
-                        "            'created': 'created unix timestamp'," +
-                        "            'modified': 'modified unix timestamp'" +
+                        "            'created': '1411606421'," +
+                        "            'modified': '1411606421'" +
                         "        }" +
                         "    ]," +
                         "    'tags': ['tag1', 'tag2']}"
@@ -138,8 +138,8 @@ public class SendWithUsTest
                         "        {" +
                         "            'name': 'Version Name'," +
                         "            'id': 'ver_arstneiotsra'," +
-                        "            'created': 'created unix timestamp'," +
-                        "            'modified': 'modified unix timestamp'" +
+                        "            'created': '1411606421'," +
+                        "            'modified': '1411606421'" +
                         "        }" +
                         "    ]," +
                         "    'tags': ['tag1', 'tag2']}"
