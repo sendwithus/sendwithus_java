@@ -147,7 +147,8 @@ SendReceipt sendReceipt = sendwithusAPI.send(request);
 
 Email template = sendwithusAPI.template(TEMPLATE_ID);
 List<TemplateVersion> versions = template.getVersions();
-TemplateVersion version = version
+TemplateVersion version = version.get(0);
+TemplateVersionDetails details = sendwithusAPI.version(TEMPLATE_ID, version.getId());
 
 // Example 
 ```
