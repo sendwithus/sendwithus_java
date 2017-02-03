@@ -23,29 +23,28 @@ import com.sendwithus.model.*;
  */
 public class SendWithUs
 {
-    
-    public static final String API_PROTO = "https";
-    public static final String API_HOST = "api.sendwithus.com";
-    public static final String API_PORT = "443";
-    
-    public static final String API_VERSION = "1";
     public static final String CLIENT_VERSION = "1.10.0";
     public static final String CLIENT_LANG = "java";
     public static final String SWU_API_HEADER = "X-SWU-API-KEY";
     public static final String SWU_CLIENT_HEADER = "X-SWU-API-CLIENT";
 
     private String apiKey;
+    private SendWithUsApiLocation sendWithUsApiLocation;
 
     public SendWithUs(String apiKey)
     {
+        this(apiKey, SendWithUsApiLocation.defaultApiLocation());
+    }
+
+    public SendWithUs(String apiKey, SendWithUsApiLocation sendWithUsApiLocation)
+    {
         this.apiKey = apiKey;
+        this.sendWithUsApiLocation = sendWithUsApiLocation;
     }
 
     private String getURLEndpoint(String resourceName)
     {
-        return String.format("%s://%s:%s/api/v%s/%s", SendWithUs.API_PROTO,
-                SendWithUs.API_HOST, SendWithUs.API_PORT,
-                SendWithUs.API_VERSION, resourceName);
+        return sendWithUsApiLocation.getEndpointUrl(resourceName);
     }
 
     private HttpURLConnection createConnection(

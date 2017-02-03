@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sendwithus.model.*;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -26,17 +26,17 @@ public class SendWithUsTest
     public static final String TEMPLATE_ID = "test_template_1";
     public static final String VERSION_ID = "test_version_1";
 
-    static SendWithUs sendwithusAPI;
+    SendWithUs sendwithusAPI;
 
-    static Map<String, Object> defaultRecipientParams = new HashMap<String, Object>();
-    static Map<String, Object> invalidRecipientParams = new HashMap<String, Object>();
-    static Map<String, Object> defaultSenderParams = new HashMap<String, Object>();
-    static Map<String, Object> defaultDataParams = new HashMap<String, Object>();
+    Map<String, Object> defaultRecipientParams = new HashMap<String, Object>();
+    Map<String, Object> invalidRecipientParams = new HashMap<String, Object>();
+    Map<String, Object> defaultSenderParams = new HashMap<String, Object>();
+    Map<String, Object> defaultDataParams = new HashMap<String, Object>();
     
     private static final String TEST_RECIPIENT_ADDRESS = "swunit+javaclient@sendwithus.com";
 
-    @BeforeClass
-    public static void setUp()
+    @Before
+    public void setUp()
     {
         sendwithusAPI = Mockito.spy(new SendWithUs(SENDWITHUS_API_KEY));
 
@@ -576,5 +576,32 @@ public class SendWithUsTest
         DeactivatedDrips receipt = sendwithusAPI.deactivateDrips(TEST_RECIPIENT_ADDRESS);
         assertSuccessfulAPIResponse(receipt);
     }
-   
+
+    /**
+     * Test default api location.
+     */
+    @Test
+    public void testDefaultApiLocation() throws Exception
+    {
+        sendwithusAPI.templates();
+
+        String url = String.format("%s://%s:%s/api/v%s/%s", SendWithUsApiLocation.PROTO, SendWithUsApiLocation.HOST, SendWithUsApiLocation.PORT, SendWithUsApiLocation.VERSION, "templates");
+        Mockito.verify(sendwithusAPI).makeURLRequest(url, "GET", null);
+    }
+
+    /**
+     * Test custom api location.
+     */
+    @Test
+    public void testCustomApiLocation() throws Exception
+    {
+        String apiLocation = "http://localhost:8888/v1";
+        SendWithUs sendwithusAPI = Mockito.spy(new SendWithUs(SENDWITHUS_API_KEY, new SendWithUsApiLocation(apiLocation)));
+        String url = String.format("%s/%s", apiLocation, "templates");
+        Mockito.doReturn("[]").when(sendwithusAPI).makeURLRequest(url, "GET", null);
+
+        sendwithusAPI.templates();
+
+        Mockito.verify(sendwithusAPI).makeURLRequest(url, "GET", null);
+    }
 }
