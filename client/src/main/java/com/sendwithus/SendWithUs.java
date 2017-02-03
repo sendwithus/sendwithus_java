@@ -23,7 +23,7 @@ import com.sendwithus.model.*;
  */
 public class SendWithUs
 {
-    public static final String CLIENT_VERSION = "1.10.0";
+    public static final String CLIENT_VERSION = "1.11.0";
     public static final String CLIENT_LANG = "java";
     public static final String SWU_API_HEADER = "X-SWU-API-KEY";
     public static final String SWU_CLIENT_HEADER = "X-SWU-API-CLIENT";
