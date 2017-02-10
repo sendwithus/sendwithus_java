@@ -119,6 +119,11 @@ public class SendWithUsSendRequest
             sendParams.put("locale", locale);
         }
 
+        if (headers != null)
+        {
+            sendParams.put("headers", headers);
+        }
+
         return sendParams;
     }
 

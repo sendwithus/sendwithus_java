@@ -4,7 +4,7 @@
     <groupId>com.sendwithus</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.11.0</version>
+    <version>1.11.1</version>
     <name>sendwithus-java-parent</name>
     <url>https://github.com/sendwithus/sendwithus_java</url>
     <description>SendWithUs Java Artifact Parent Project</description>
