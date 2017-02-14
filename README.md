@@ -150,7 +150,7 @@ List<TemplateVersion> versions = template.getVersions();
 TemplateVersion version = version.get(0);
 TemplateVersionDetails details = sendwithusAPI.version(TEMPLATE_ID, version.getId());
 
-// Example 
+// Example
 ```
 
 
@@ -159,3 +159,17 @@ TemplateVersionDetails details = sendwithusAPI.version(TEMPLATE_ID, version.getI
 The following errors may be generated:
 
     com.sendwithus.exception.SendWithUsException - Raised by send exceptions
+
+### Response Ranges
+
+Sendwithus' API typically sends responses back in these ranges:
+
+-   2xx – Successful Request
+-   4xx – Failed Request (Client error)
+-   5xx – Failed Request (Server error)
+
+If you're receiving an error in the 400 response range follow these steps:
+
+-   Double check the data and ID's getting passed to sendwithus
+-   Ensure your API key is correct
+-   Log and check the body of the response
