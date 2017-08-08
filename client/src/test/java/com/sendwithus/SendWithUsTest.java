@@ -21,7 +21,7 @@ import com.sendwithus.exception.SendWithUsException;
 public class SendWithUsTest
 {
 
-    public static final String SENDWITHUS_API_KEY = "THIS_IS_A_TEST_API_KEY";
+    public static final String SENDWITHUS_API_KEY = "JAVA_API_CLIENT_TEST_KEY";
     public static final String EMAIL_ID = "test_fixture_1";
     public static final String TEMPLATE_ID = "test_template_1";
     public static final String VERSION_ID = "test_version_1";
