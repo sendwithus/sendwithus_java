@@ -99,28 +99,32 @@ import com.sendwithus.SendWithUs;
 
 final String SENDWITHUS_API_KEY = "API-KEY-HERE";
 final String EMAIL_ID_WELCOME_EMAIL = "EMAIL-ID-HERE";
-final String TEMPLATE_ID = "template-id";
+final String TEMPLATE_ID = "TEMPLATE-ID-HERE";
+final String DRIP_CAMPAIGN_ID = "DRIP-CAMPAIGN-ID-HERE";
+final String SNIPPET_ID = "SNIPPET-ID-HERE";
 
 SendWithUs sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
 
-// Send Welcome Email
+// Send
 Map<String, Object> recipientMap = new HashMap<String, Object>();
 recipientMap.put("name", "Matt"); // optional
 recipientMap.put("address", "us@sendwithus.com");
 
-// sender is optional
+// Sender is optional
 Map<String, Object> senderMap = new HashMap<String, Object>();
 senderMap.put("name", "Company"); // optional
 senderMap.put("address", "company@company.com");
 senderMap.put("reply_to", "info@company.com"); // optional
 
-// ESP account is an advanced feature, optional
-String espAccount = "tdf_123981";
+// ESP Account is optional
+String espAccount = "esp_1234asdf";
 
+// Setup Email Data for Send
 Map<String, Object> emailDataMap = new HashMap<String, Object>();
 emailDataMap.put("first_name", "Brad");
 emailDataMap.put("link", "http://sendwithus.com/some_link");
 
+// Attachments is optional
 String[] attachments = {"test.png"}
 
 // Sending the email using the legacy send() java API
@@ -145,12 +149,37 @@ SendWithUsSendRequest request = new SendWithUsSendRequest()
     .setEspAccount(espAccount);
 SendReceipt sendReceipt = sendwithusAPI.send(request);
 
+// Templates
 Email template = sendwithusAPI.template(TEMPLATE_ID);
 List<TemplateVersion> versions = template.getVersions();
-TemplateVersion version = version.get(0);
+TemplateVersion version = versions.get(0);
 TemplateVersionDetails details = sendwithusAPI.version(TEMPLATE_ID, version.getId());
 
-// Example
+// Drip Campaigns
+String recipientAddress = "customer@email.com";
+
+SendWithUsDripRequest dripRequest = new SendWithUsDripRequest();
+dripRequest.setRecipient(recipientMap);
+dripRequest.setEmailData(emailDataMap);
+
+ActivatedDrip activateDripCampaign = sendwithusAPI.startOnDripCampaign(DRIP_CAMPAIGN_ID, dripRequest);
+DeactivatedDrip deactivateDripCampaign = sendwithusAPI.removeFromDripCampaign(recipientAddress, DRIP_CAMPAIGN_ID);
+DeactivatedDrips deactivateAllDripCampaigns = sendwithusAPI.deactivateDrips(recipientAddress);
+
+// Customers
+CustomerReceipt customerReceipt = sendwithusAPI.createUpdateCustomer(recipientAddress, emailDataMap);
+
+// Snippets
+String snippetName = "My Snippet";
+String snippetBody = "<h1>Snippets!</h1>";
+Snippet[] snippets = sendwithusAPI.getSnippets();
+Snippet snippet = sendwithusAPI.getSnippet(SNIPPET_ID);
+SnippetReceipt createSnippet = sendwithusAPI.createSnippet(snippetName, snippetBody);
+SnippetReceipt updateSnippet = sendwithusAPI.updateSnippet(SNIPPET_ID, snippetName, snippetBody);
+APIReceipt deleteSnippet = sendwithusAPI.deleteSnippet(SNIPPET_ID);
+
+// Render
+RenderedTemplate render = sendwithusAPI.render(TEMPLATE_ID, emailDataMap);
 ```
 
 
