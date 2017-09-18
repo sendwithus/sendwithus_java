@@ -88,6 +88,7 @@ Two APIs now exist for issuing "Send" requests:
  - createSnippet(String, String)
  - updateSnippet(String, String, String)
  - deleteSnippet(String)
+ - resend(String)
 
 ### Examples
 
@@ -148,6 +149,9 @@ SendWithUsSendRequest request = new SendWithUsSendRequest()
     .setAttachmentPaths(attachments)
     .setEspAccount(espAccount);
 SendReceipt sendReceipt = sendwithusAPI.send(request);
+
+// Resend Example
+SendReceipt sendReceipt = sendwithusAPI.resend("log_asdf123456qwerty"); 
 
 // Templates
 Email template = sendwithusAPI.template(TEMPLATE_ID);

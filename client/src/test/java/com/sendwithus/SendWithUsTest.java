@@ -198,6 +198,31 @@ public class SendWithUsTest
     }
 
     /**
+     * Test resend on simple message
+     */
+    @Test
+    public void testResend() throws SendWithUsException
+    {
+        SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
+                defaultRecipientParams, defaultDataParams);
+
+        sendReceipt = sendwithusAPI.resend(sendReceipt.getReceiptID());
+
+        assertSuccessfulAPIReceipt(sendReceipt);
+        assertNotNull(sendReceipt.getEmail());
+        assertEquals(sendReceipt.getEmail().getLocale(), "en-US");
+    }
+
+    /**
+     * Test resend on invalid receipt_id
+     */
+    @Test(expected = SendWithUsException.class)
+    public void testResendOnInvalidId() throws SendWithUsException
+    {
+        SendReceipt sendReceipt = sendwithusAPI.resend("INVALID_RECEIPT_ID");
+    }
+
+    /**
      * Test send with sender info
      */
     @Test
