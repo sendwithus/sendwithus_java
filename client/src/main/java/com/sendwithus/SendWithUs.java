@@ -683,6 +683,24 @@ public class SendWithUs
         return gson.fromJson(response, CustomerReceipt.class);
     }
 
+    /**
+     * Resend a specific email by id.
+     *
+     * @param logId
+     *            The log id of the email to be resent
+     * @return The receipt ID
+     * @throws SendWithUsException
+     */
+    public SendReceipt resend(String logId) throws SendWithUsException {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("log_id", logId);
+
+        String url = getURLEndpoint("resend");
+
+        String response = makeURLRequest(url, "POST", sendParams);
+        Gson gson = new Gson();
+        return gson.fromJson(response, SendReceipt.class);
+    }
 
     /**
      * Gets all snippets for your account.
