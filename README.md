@@ -26,12 +26,12 @@ Add the following to your pom.xml:
 <dependency>
         <groupId>com.sendwithus</groupId>
         <artifactId>java-client</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.1</version>
 </dependency>
 ```
 ### via wget:
 
-    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/2.1.0/java-client-2.1.0.jar
+    $ wget https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases/com/sendwithus/java-client/2.1.1/java-client-2.1.1.jar
 
 ### External Dependencies (if not using maven)
  - [gson-2.2.2](https://github.com/google/gson)
