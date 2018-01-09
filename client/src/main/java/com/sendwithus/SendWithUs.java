@@ -166,7 +166,7 @@ public class SendWithUs
                     throw new SendWithUsException("Resource not found");
                 default:
                     throw new SendWithUsException(String.format(
-                            "Unknown error %d, contact api@sendwithus.com",
+                            "Unknown error %d, contact support@sendwithus.com",
                             responseCode));
                 }
             }
