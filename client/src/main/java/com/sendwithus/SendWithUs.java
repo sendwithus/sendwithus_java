@@ -23,7 +23,7 @@ import com.sendwithus.model.*;
  */
 public class SendWithUs
 {
-    public static final String CLIENT_VERSION = "2.1.0";
+    public static final String CLIENT_VERSION = "2.1.1";
     public static final String CLIENT_LANG = "java";
     public static final String SWU_API_HEADER = "X-SWU-API-KEY";
     public static final String SWU_CLIENT_HEADER = "X-SWU-API-CLIENT";
@@ -166,7 +166,7 @@ public class SendWithUs
                     throw new SendWithUsException("Resource not found");
                 default:
                     throw new SendWithUsException(String.format(
-                            "Unknown error %d, contact api@sendwithus.com",
+                            "Unknown error %d, contact support@sendwithus.com",
                             responseCode));
                 }
             }
