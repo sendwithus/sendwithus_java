@@ -72,7 +72,7 @@ public class SendWithUs
 
         connection.setRequestMethod(method);
 
-        if (method == "POST")
+        if (method.equals("POST") || method.equals("PUT"))
         {
             connection.setDoOutput(true); // Note: this implicitly sets method
                                           // to POST
