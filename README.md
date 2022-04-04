@@ -98,11 +98,11 @@ import java.util.Map;
 
 import com.sendwithus.SendWithUs;
 
-final String SENDWITHUS_API_KEY = "API-KEY-HERE";
-final String EMAIL_ID_WELCOME_EMAIL = "EMAIL-ID-HERE";
-final String TEMPLATE_ID = "TEMPLATE-ID-HERE";
-final String DRIP_CAMPAIGN_ID = "DRIP-CAMPAIGN-ID-HERE";
-final String SNIPPET_ID = "SNIPPET-ID-HERE";
+// IDs and API keys are found in the Sendwithus dashboard
+final String SENDWITHUS_API_KEY = "API-KEY-HERE"; // starts with "live_..." or "test_..."
+final String TEMPLATE_ID = "TEMPLATE-ID-HERE"; // starts with "tem_..."
+final String DRIP_CAMPAIGN_ID = "DRIP-CAMPAIGN-ID-HERE"; // starts with "dc_..."
+final String SNIPPET_ID = "SNIPPET-ID-HERE"; // starts with "snp_..."
 
 SendWithUs sendwithusAPI = new SendWithUs(SENDWITHUS_API_KEY);
 
@@ -128,9 +128,21 @@ emailDataMap.put("link", "http://sendwithus.com/some_link");
 // Attachments is optional
 String[] attachments = {"test.png"}
 
+// CC is optional (BCC follows a similar pattern)
+String[] ccEmails = {"name.foo@domain.ca", "name.bar@domain.ca"};
+HashMap<String, Object>[] ccRecipientsMap = (HashMap<String, Object>[]) new HashMap[ccEmails.length];
+
+int i = 0;
+for (String email : ccEmails){
+    HashMap<String, Object> hashMap = new HashMap<String, Object>();
+    hashMap.put("address", email);
+    ccRecipientsMap[i] = hashMap;
+    i++;
+}
+
 // Sending the email using the legacy send() java API
 SendReceipt sendReceipt = sendwithusAPI.send(
-    EMAIL_ID_WELCOME_EMAIL,
+    TEMPLATE_ID,
     recipientMap,
     senderMap,
     emailDataMap,
@@ -142,8 +154,9 @@ SendReceipt sendReceipt = sendwithusAPI.send(
 
 // Example sending the same email using the new SendWithUsSendRequest class
 SendWithUsSendRequest request = new SendWithUsSendRequest()
-    .setEmailId(EMAIL_ID_WELCOME_EMAIL)
+    .setEmailId(TEMPLATE_ID)
     .setRecipient(recipientMap)
+    .setCcRecipients(ccRecipientsMap)
     .setSender(senderMap)
     .setEmailData(emailDataMap)
     .setAttachmentPaths(attachments)
