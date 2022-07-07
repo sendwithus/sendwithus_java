@@ -203,10 +203,14 @@ public class SendWithUsTest
      * Test resend on simple message
      */
     @Test
-    public void testResend() throws SendWithUsException
+    public void testResend() throws SendWithUsException, InterruptedException
     {
         SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
                 defaultRecipientParams, defaultDataParams);
+
+        // HACK: Trying to immediately resend can cause failures as the send log
+        // may not be found in time.
+        Thread.sleep(5000);
 
         sendReceipt = sendwithusAPI.resend(sendReceipt.getReceiptID());
 
