@@ -164,7 +164,7 @@ SendWithUsSendRequest request = new SendWithUsSendRequest()
 SendReceipt sendReceipt = sendwithusAPI.send(request);
 
 // Resend Example
-SendReceipt sendReceipt = sendwithusAPI.resend("log_asdf123456qwerty"); 
+SendReceipt sendReceipt = sendwithusAPI.resend("log_asdf123456qwerty");
 
 // Templates
 Email template = sendwithusAPI.template(TEMPLATE_ID);
@@ -219,3 +219,17 @@ If you're receiving an error in the 400 response range follow these steps:
 -   Double check the data and ID's getting passed to sendwithus
 -   Ensure your API key is correct
 -   Log and check the body of the response
+
+## Developing
+
+### Prerequisites
+
+* Java version 8 or higher
+* Maven
+
+### Building and Running Tests
+
+To build the client and run tests use this command:
+```
+mvn verify
+```
