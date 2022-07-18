@@ -4,7 +4,7 @@
     <groupId>com.sendwithus</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.1.2</version>
+    <version>2.2.0</version>
     <name>sendwithus-java-parent</name>
     <url>https://github.com/sendwithus/sendwithus_java</url>
     <description>SendWithUs Java Artifact Parent Project</description>
@@ -48,8 +48,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>

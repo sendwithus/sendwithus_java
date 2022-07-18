@@ -5,6 +5,8 @@ public class TemplateVersionDetails extends TemplateVersion {
     private String html;
     private String text;
     private String subject;
+    private String preheader;
+    private String amp_html;
 
     public boolean isPublished() {
         return published;
@@ -36,5 +38,21 @@ public class TemplateVersionDetails extends TemplateVersion {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getPreheader() {
+        return preheader;
+    }
+
+    public void setPreheader(String preheader) {
+        this.preheader = preheader;
+    }
+
+    public String getAmpHtml() {
+        return amp_html;
+    }
+
+    public void setAmpHtml(String ampHtml) {
+        this.amp_html = ampHtml;
     }
 }

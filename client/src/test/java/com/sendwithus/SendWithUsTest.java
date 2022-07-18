@@ -158,13 +158,15 @@ public class SendWithUsTest
     public void testGetTemplateVersion() throws SendWithUsException
     {
         Mockito.doReturn(
-                "{'id': 'test-templateVersion-id', 'name': 'test-version', 'html': '<h1>test header</h1>', 'created': 1414091325}"
+                "{'id': 'test-templateVersion-id', 'name': 'test-version', 'html': '<h1>test header</h1>', 'created': 1414091325, 'preheader': 'foobar', 'amp_html': '<h2>test amp header</h2>'}"
         ).when(sendwithusAPI).makeURLRequest(
                 Mockito.endsWith("templates/" + TEMPLATE_ID + "/versions/" + VERSION_ID), Mockito.eq("GET")
         );
         TemplateVersionDetails version = sendwithusAPI.templateVersion(TEMPLATE_ID, VERSION_ID);
         assertSuccessfulAPIResponse(version);
         assertEquals("<h1>test header</h1>", version.getHtml());
+        assertEquals("foobar", version.getPreheader());
+        assertEquals("<h2>test amp header</h2>", version.getAmpHtml());
     }
 
     /**
@@ -201,10 +203,14 @@ public class SendWithUsTest
      * Test resend on simple message
      */
     @Test
-    public void testResend() throws SendWithUsException
+    public void testResend() throws SendWithUsException, InterruptedException
     {
         SendReceipt sendReceipt = sendwithusAPI.send(EMAIL_ID,
                 defaultRecipientParams, defaultDataParams);
+
+        // HACK: Trying to immediately resend can cause failures as the send log
+        // may not be found in time.
+        Thread.sleep(5000);
 
         sendReceipt = sendwithusAPI.resend(sendReceipt.getReceiptID());
 

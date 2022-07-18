@@ -32,6 +32,10 @@ public class RenderedTemplate extends APIReceipt {
     @Deprecated
     public Template template; // must match JSON response
 
+    private String preheader;
+
+    private String amp_html;
+
     public class Template {
         
         /**
@@ -65,6 +69,14 @@ public class RenderedTemplate extends APIReceipt {
 
     public String getText() {
         return text;
+    }
+
+    public String getPreheader() {
+        return preheader;
+    }
+
+    public String getAmpHtml() {
+        return amp_html;
     }
 
     public Template getTemplate() {
