@@ -527,7 +527,7 @@ public class SendWithUs
                             Map<String, Object> sender, Map<String, Object> emailData,
                             Map<String, Object>[] cc, Map<String, Object>[] bcc,
                             String[] attachment_paths, String espAccount,
-                            String locale, Map<String, String> headers)
+                            String locale, Map<String, Object> headers)
             throws SendWithUsException
     {
         SendWithUsSendRequest request = new SendWithUsSendRequest();

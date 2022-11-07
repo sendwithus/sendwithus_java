@@ -327,7 +327,7 @@ public class SendWithUsTest
     @Test
     public void testSendWithHeaders() throws SendWithUsException
     {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, Object> headers = new HashMap<String, Object>();
         headers.put("X-Auto-Response-Suppress", "header-value");
 
         SendWithUsSendRequest request = new SendWithUsSendRequest()

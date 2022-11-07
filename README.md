@@ -71,7 +71,7 @@ Two APIs now exist for issuing "Send" requests:
   - setEspAccount(String espAccount)
   - setVersionName(String versionName)
   - setLocale(String locale)
-  - setHeaders(Map<String, String> headers)
+  - setHeaders(Map<String, Object> headers)
 
 ### Advanced
 

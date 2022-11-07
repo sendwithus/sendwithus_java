@@ -30,7 +30,7 @@ public class SendWithUsSendRequest
     private String espAccount = null;
     private String versionName = null;
     private String locale = null;
-    private Map<String, String> headers = null;
+    private Map<String, Object> headers = null;
 
     public SendWithUsSendRequest()
     {
@@ -201,7 +201,7 @@ public class SendWithUsSendRequest
         return this;
     }
 
-    public SendWithUsSendRequest setHeaders(Map<String, String> headers)
+    public SendWithUsSendRequest setHeaders(Map<String, Object> headers)
     {
         this.headers = headers;
         return this;
