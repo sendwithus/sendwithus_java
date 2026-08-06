@@ -585,16 +585,16 @@ public class SendWithUs
      * href="https://github.com/sendwithus/docs/blob/master/v1/render.md">
      * top-level parameters</a> directly.
      *
-     * @param sendParams Map of render API parameters. See <a href="https://github.com/sendwithus/docs/blob/master/v1/render.md">docs</a>
+     * @param params Map of render API parameters. See <a href="https://support.sendwithus.com/api/#renderapi">docs</a>
      * @return The rendered template
      * @throws SendWithUsException
      */
-    public RenderedTemplate render(Map<String, Object> sendParams)
+    public RenderedTemplate render(Map<String, Object> params)
             throws SendWithUsException
     {
         String url = getURLEndpoint("render");
 
-        String response = makeURLRequest(url, "POST", sendParams);
+        String response = makeURLRequest(url, "POST", params);
 
         Gson gson = new Gson();
         return gson.fromJson(response, RenderedTemplate.class);
