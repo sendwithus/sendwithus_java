@@ -435,6 +435,22 @@ public class SendWithUsTest
     }
 
     /**
+     * Test render
+     */
+    @Test
+    public void testAdvancedRender() throws SendWithUsException
+    {
+        Map<String, Object> args = new HashMap<>();
+        args.put("template", EMAIL_ID);
+        args.put("template_data", defaultDataParams);
+        args.put("strict", true);
+
+        RenderedTemplate renderedTemplate = sendwithusAPI.render(args);
+
+        assertSuccessfulAPIReceipt(renderedTemplate);
+    }
+
+    /**
      * Test invalid email_id
      */
     @Test(expected = SendWithUsException.class)
