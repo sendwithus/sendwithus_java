@@ -573,10 +573,25 @@ public class SendWithUs
     public RenderedTemplate render(String templateId,
             Map<String, Object> templateData) throws SendWithUsException
     {
-        Map<String, Object> sendParams = new HashMap<String, Object>();
+        Map<String, Object> sendParams = new HashMap<>();
         sendParams.put("template_id", templateId);
         sendParams.put("template_data", templateData);
 
+        return render(sendParams);
+    }
+
+    /**
+     * Like {this#render}, but exposing all <a
+     * href="https://github.com/sendwithus/docs/blob/master/v1/render.md">
+     * top-level parameters</a> directly.
+     *
+     * @param sendParams Map of render API parameters. See <a href="https://github.com/sendwithus/docs/blob/master/v1/render.md">docs</a>
+     * @return The rendered template
+     * @throws SendWithUsException
+     */
+    public RenderedTemplate render(Map<String, Object> sendParams)
+            throws SendWithUsException
+    {
         String url = getURLEndpoint("render");
 
         String response = makeURLRequest(url, "POST", sendParams);
